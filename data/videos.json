@@ -1,0 +1,28 @@
+[
+  {
+    "id": "demo-video-001",
+    "type": "video",
+    "src": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    "poster": "",
+    "title": "Big Buck Bunny",
+    "description": "Sample video — replace with your R2 URL",
+    "duration": 30
+  },
+  {
+    "id": "demo-story-001",
+    "type": "html",
+    "src": "stories/demo.html",
+    "poster": "",
+    "title": "Interactive Storyboard",
+    "description": "HTML canvas story — replace with your R2 URL"
+  },
+  {
+    "id": "demo-video-002",
+    "type": "video",
+    "src": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    "poster": "",
+    "title": "Elephants Dream",
+    "description": "Sample video — replace with your R2 URL",
+    "duration": 45
+  }
+]
