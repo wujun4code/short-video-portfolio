@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+<title>AI + 程序员账号片尾</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0B0A1A;--text:#F0EFF8;--purple:#7C3AED;--orange:#F97316;--cyan:#06B6D4;--muted:rgba(240,239,248,.62)}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
+body{display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:min(100vw,56.25vh);height:min(100vh,177.78vw);aspect-ratio:9/16;background:radial-gradient(circle at 50% 20%,rgba(124,58,237,.20),transparent 34%),radial-gradient(circle at 30% 78%,rgba(249,115,22,.16),transparent 34%),#0B0A1A;overflow:hidden}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#controls{position:absolute;left:18px;right:18px;bottom:18px;height:46px;border:1px solid rgba(240,239,248,.14);background:rgba(11,10,26,.72);backdrop-filter:blur(14px);border-radius:999px;display:flex;align-items:center;gap:12px;padding:0 14px;z-index:20;box-shadow:0 16px 44px rgba(0,0,0,.26)}
+#playBtn{width:30px;height:30px;border-radius:999px;border:1px solid rgba(240,239,248,.28);background:rgba(240,239,248,.08);color:var(--text);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#timeLabel{font-size:11px;color:rgba(240,239,248,.58);font-variant-numeric:tabular-nums;min-width:68px}
+#progressWrap{flex:1;height:6px;border-radius:999px;background:rgba(240,239,248,.12);cursor:pointer;overflow:hidden}
+#progressBar{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--cyan),var(--orange))}
+@media (max-width:520px){#controls{left:14px;right:14px;bottom:14px}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <canvas id="c" width="720" height="1280"></canvas>
+  <div id="controls" aria-label="播放控制">
+    <button id="playBtn" aria-label="播放或暂停">⏸</button>
+    <span id="timeLabel">0:00 / 0:13</span>
+    <div id="progressWrap"><div id="progressBar"></div></div>
+  </div>
+</div>
+<script>
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const W=720,H=1280,DURATION=13;
+const playBtn=document.getElementById('playBtn');
+const timeLabel=document.getElementById('timeLabel');
+const progressWrap=document.getElementById('progressWrap');
+const progressBar=document.getElementById('progressBar');
+let playing=true,startTime=null,pauseOffset=0,currentTime=0,dragging=false;
+const scenes=[
+  {start:0,end:3.2,fadeI:.55,fadeO:.55,name:'定位'},
+  {start:3.2,end:6.8,fadeI:.55,fadeO:.55,name:'内容'},
+  {start:6.8,end:10.2,fadeI:.55,fadeO:.55,name:'价值'},
+  {start:10.2,end:DURATION,fadeI:.55,fadeO:0,name:'关注'}
+];
+const C={bg:'#0B0A1A',text:'#F0EFF8',purple:'#7C3AED',orange:'#F97316',cyan:'#06B6D4',green:'#22C55E',muted:'rgba(240,239,248,.62)'};
+function clamp(v,a=0,b=1){return Math.max(a,Math.min(b,v))}
+function easeOut(t){return 1-Math.pow(1-clamp(t),3)}
+function easeInOut(t){t=clamp(t);return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+function sceneAlpha(progress,i){const s=scenes[i],t=progress*DURATION;if(t<s.start||t>s.end)return 0;let a=1;if(t<s.start+s.fadeI)a=(t-s.start)/s.fadeI;if(s.fadeO>0&&t>s.end-s.fadeO)a=(s.end-t)/s.fadeO;return clamp(a)}
+function sceneProg(progress,i){const s=scenes[i],t=progress*DURATION;return clamp((t-s.start)/(s.end-s.start))}
+function fmt(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return `${m}:${String(s).padStart(2,'0')}`}
+function setA(a){ctx.globalAlpha=a}
+function text(str,x,y,size,weight='700',color=C.text,align='center',alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='middle';ctx.font=`${weight} ${size}px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif`;ctx.fillText(str,x,y);ctx.restore()}
+function roundRect(x,y,w,h,r,fill,stroke,alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.4;ctx.stroke()}ctx.restore()}
+function line(x1,y1,x2,y2,color,alpha=1,width=2){ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore()}
+function bg(t){
+  ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  const g=ctx.createRadialGradient(W*.52,H*.28,20,W*.52,H*.28,560);g.addColorStop(0,'rgba(124,58,237,.22)');g.addColorStop(.48,'rgba(6,182,212,.08)');g.addColorStop(1,'rgba(11,10,26,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  const g2=ctx.createRadialGradient(W*.32,H*.80,10,W*.32,H*.80,450);g2.addColorStop(0,'rgba(249,115,22,.20)');g2.addColorStop(1,'rgba(11,10,26,0)');ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
+  for(let i=0;i<42;i++){const x=(Math.sin(t*.35+i*12.989)*43758.5453%1+1)%1*W;const y=(Math.cos(t*.22+i*78.233)*24634.6345%1+1)%1*H;const pulse=.35+.65*Math.sin(t*.9+i);ctx.fillStyle=`rgba(240,239,248,${.045+.035*pulse})`;ctx.beginPath();ctx.arc(x,y,1.2+(i%4)*.35,0,Math.PI*2);ctx.fill()}
+  ctx.save();ctx.globalAlpha=.18;ctx.strokeStyle='rgba(124,58,237,.32)';ctx.lineWidth=1;for(let y=160;y<1120;y+=86){ctx.beginPath();ctx.moveTo(58,y+Math.sin(t*.6+y)*8);ctx.bezierCurveTo(220,y-30,500,y+34,662,y-8);ctx.stroke()}ctx.restore()
+}
+function logoMark(x,y,scale,a){ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ctx.globalAlpha=a;ctx.shadowColor='rgba(124,58,237,.7)';ctx.shadowBlur=22;roundRect(-62,-62,124,124,30,'rgba(124,58,237,.15)','rgba(240,239,248,.22)',1);ctx.shadowBlur=0;line(-30,8,-6,-18,C.cyan,1,8);line(-6,-18,28,26,C.orange,1,8);line(-30,8,28,26,C.purple,1,8);['-30,8','-6,-18','28,26'].forEach((p,i)=>{const [px,py]=p.split(',').map(Number);ctx.fillStyle=[C.cyan,C.text,C.orange][i];ctx.beginPath();ctx.arc(px,py,9,0,Math.PI*2);ctx.fill()});ctx.restore()}
+function drawS1(p,a){const inA=a*easeOut(p*1.8);logoMark(W/2,292,1.05+.05*Math.sin(p*Math.PI),inA);text('AI + 程序员',W/2,450,62,'800',C.text,'center',inA);text('用老程序员视角，看懂 AI 时代',W/2,522,28,'500','rgba(240,239,248,.74)','center',a*easeOut((p-.18)*1.6));roundRect(142,598,436,58,29,'rgba(240,239,248,.06)','rgba(240,239,248,.14)',a*easeOut((p-.34)*1.8));text('技术分享 · 行业新闻导读',W/2,627,24,'600','rgba(240,239,248,.82)','center',a*easeOut((p-.38)*1.8))}
+function drawS2(p,a){text('这里不贩卖焦虑',W/2,220,42,'800',C.text,'center',a*easeOut(p*1.7));text('只拆真正有用的 AI 变化',W/2,282,30,'600',C.cyan,'center',a*easeOut((p-.12)*1.8));const items=[['AI 编程','工具怎么用，效率怎么提'],['技术趋势','哪些变化真的影响开发者'],['行业新闻','热闹背后和你有什么关系']];items.forEach((it,i)=>{const y=420+i*152;const ia=a*easeOut((p-.22-i*.12)*1.7);roundRect(92,y-52,536,104,28,'rgba(240,239,248,.055)','rgba(240,239,248,.13)',ia);text(it[0],142,y-14,28,'800',[C.purple,C.cyan,C.orange][i],'left',ia);text(it[1],142,y+26,22,'500','rgba(240,239,248,.72)','left',ia);line(516,y,578,y,[C.purple,C.cyan,C.orange][i],ia,3)})}
+function drawS3(p,a){text('关注这个账号，你会得到什么？',W/2,232,36,'800',C.text,'center',a*easeOut(p*1.6));const cards=[['少踩坑','AI 工具不是越多越好'],['看机会','新闻里找程序员的机会'],['能落地','把 AI 变成生产力']];cards.forEach((c,i)=>{const x=118+i*176,y=475;const ia=a*easeOut((p-.20-i*.11)*1.7);roundRect(x,y,142,188,34,'rgba(255,255,255,.06)','rgba(255,255,255,.14)',ia);text(c[0],x+71,y+62,26,'800',[C.orange,C.cyan,C.green][i],'center',ia);text(c[1],x+71,y+122,18,'500','rgba(240,239,248,.68)','center',ia)});roundRect(110,760,500,74,37,'rgba(124,58,237,.16)','rgba(124,58,237,.28)',a*easeOut((p-.62)*1.8));text('别只看热闹，要能带回工作里',W/2,797,25,'700',C.text,'center',a*easeOut((p-.66)*1.8))}
+function drawS4(p,a){logoMark(W/2,270,.92,a*easeOut(p*1.5));text('关注我',W/2,430,76,'900',C.text,'center',a*easeOut((p-.06)*1.5));text('用程序员视角看 AI',W/2,512,36,'700',C.cyan,'center',a*easeOut((p-.18)*1.5));roundRect(98,620,524,92,46,'rgba(249,115,22,.14)','rgba(249,115,22,.34)',a*easeOut((p-.34)*1.6));text('把 AI 变成真正的生产力',W/2,666,31,'800',C.text,'center',a*easeOut((p-.38)*1.6));text('#AI编程  #程序员  #技术分享',W/2,784,25,'600','rgba(240,239,248,.66)','center',a*easeOut((p-.54)*1.5));text('下期继续拆给你看',W/2,908,24,'500','rgba(240,239,248,.50)','center',a*easeOut((p-.72)*1.4))}
+function drawFrame(progress){const t=progress*DURATION;bg(t);for(let i=0;i<scenes.length;i++){const a=sceneAlpha(progress,i);if(a<=0)continue;const p=sceneProg(progress,i);if(i===0)drawS1(p,a);if(i===1)drawS2(p,a);if(i===2)drawS3(p,a);if(i===3)drawS4(p,a)} }
+function updateUI(){const sec=currentTime*DURATION;timeLabel.textContent=`${fmt(sec)} / ${fmt(DURATION)}`;progressBar.style.width=(currentTime*100).toFixed(2)+'%';playBtn.textContent=playing?'⏸':'▶'}
+function loop(ts){if(startTime===null)startTime=ts;if(playing&&!dragging){const elapsed=(ts-startTime)/1000+pauseOffset;currentTime=clamp(elapsed/DURATION);if(currentTime>=1){playing=false;pauseOffset=DURATION;currentTime=1}}drawFrame(currentTime);updateUI();requestAnimationFrame(loop)}
+playBtn.addEventListener('click',()=>{if(playing){pauseOffset=currentTime*DURATION;playing=false}else{startTime=performance.now();pauseOffset=currentTime*DURATION;playing=true}});
+function seek(clientX){const r=progressWrap.getBoundingClientRect();currentTime=clamp((clientX-r.left)/r.width);pauseOffset=currentTime*DURATION;startTime=performance.now();drawFrame(currentTime);updateUI()}
+progressWrap.addEventListener('pointerdown',e=>{dragging=true;seek(e.clientX);progressWrap.setPointerCapture(e.pointerId)});
+progressWrap.addEventListener('pointermove',e=>{if(dragging)seek(e.clientX)});
+progressWrap.addEventListener('pointerup',e=>{dragging=false;seek(e.clientX)});
+window.__outro={duration:()=>DURATION,scenes:()=>scenes,drawFrame,audio:()=>false};
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
