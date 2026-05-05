@@ -24,24 +24,22 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
   <canvas id="c" width="720" height="1280"></canvas>
   <div id="controls" aria-label="播放控制">
     <button id="playBtn" aria-label="播放或暂停">⏸</button>
-    <span id="timeLabel">0:00 / 0:16</span>
+    <span id="timeLabel">0:00 / 0:07</span>
     <div id="progressWrap"><div id="progressBar"></div></div>
   </div>
 </div>
 <script>
 const canvas=document.getElementById('c');
 const ctx=canvas.getContext('2d');
-const W=720,H=1280,DURATION=16;
+const W=720,H=1280,DURATION=7;
 const playBtn=document.getElementById('playBtn');
 const timeLabel=document.getElementById('timeLabel');
 const progressWrap=document.getElementById('progressWrap');
 const progressBar=document.getElementById('progressBar');
 let playing=true,startTime=null,pauseOffset=0,currentTime=0,dragging=false;
 const scenes=[
-  {start:0,end:4.0,fadeI:.65,fadeO:.65,name:'账号识别'},
-  {start:4.0,end:8.0,fadeI:.65,fadeO:.65,name:'内容承诺'},
-  {start:8.0,end:12.0,fadeI:.65,fadeO:.65,name:'关注理由'},
-  {start:12.0,end:DURATION,fadeI:.65,fadeO:0,name:'搜索关注'}
+  {start:0,end:2.4,fadeI:.35,fadeO:.35,name:'记住账号'},
+  {start:2.4,end:DURATION,fadeI:.35,fadeO:0,name:'扫码关注'}
 ];
 const C={bg:'#070712',text:'#F0EFF8',purple:'#7C3AED',orange:'#F97316',cyan:'#06B6D4',gold:'#FBBF24',green:'#22C55E',muted:'rgba(240,239,248,.66)'};
 const QR_TARGET='https://www.douyin.com/search/%E7%A5%9E%E7%AC%94%E7%A0%81%E5%86%9C?type=general';
@@ -79,12 +77,25 @@ function drawQR(x,y,size,a){
   }
   ctx.restore();
 }
-function drawS1(p,a){const ia=a*easeOut(p*1.45);logoMark(W/2,270,1.0+.04*Math.sin(p*Math.PI),ia);shimmerText('神笔码农',W/2,450,78,a*easeOut((p-.08)*1.45));text('AI + 程序员',W/2,530,38,'800',C.cyan,'center',a*easeOut((p-.20)*1.5));roundRect(104,618,512,68,34,'rgba(240,239,248,.055)','rgba(240,239,248,.15)',a*easeOut((p-.38)*1.5));text('用程序员视角，看懂 AI 时代',W/2,652,27,'650','rgba(240,239,248,.82)','center',a*easeOut((p-.42)*1.5))}
-function drawS2(p,a){text('技术分享，不止讲工具',W/2,220,40,'850',C.text,'center',a*easeOut(p*1.45));text('我更关心：它怎么帮你解决问题',W/2,284,25,'600',C.cyan,'center',a*easeOut((p-.14)*1.55));const items=[['AI 编程','把工具变成开发效率'],['行业新闻','把热点翻译成机会'],['实战经验','把概念落到工作流']];items.forEach((it,i)=>{const y=430+i*148;const ia=a*easeOut((p-.25-i*.11)*1.55);roundRect(88,y-48,544,96,30,'rgba(240,239,248,.052)','rgba(240,239,248,.13)',ia);text(it[0],136,y-12,29,'850',[C.purple,C.cyan,C.orange][i],'left',ia);text(it[1],136,y+27,22,'500','rgba(240,239,248,.70)','left',ia);line(515,y,584,y,[C.purple,C.cyan,C.orange][i],ia,3.5)})}
-function drawS3(p,a){text('关注之后，你少走三段弯路',W/2,230,36,'850',C.text,'center',a*easeOut(p*1.45));const cards=[['少踩坑','避开无效工具'],['看趋势','抓住真实机会'],['能落地','形成生产力']];cards.forEach((c,i)=>{const x=88+i*181,y=430;const ia=a*easeOut((p-.20-i*.11)*1.55);roundRect(x,y,158,205,36,'rgba(255,255,255,.058)','rgba(255,255,255,.15)',ia);text(c[0],x+79,y+65,28,'850',[C.orange,C.cyan,C.green][i],'center',ia);text(c[1],x+79,y+126,20,'550','rgba(240,239,248,.68)','center',ia)});roundRect(92,748,536,82,41,'rgba(124,58,237,.16)','rgba(124,58,237,.32)',a*easeOut((p-.62)*1.55));text('别只围观 AI，要把它用进工作里',W/2,789,26,'800',C.text,'center',a*easeOut((p-.66)*1.55))}
-function drawS4(p,a){logoMark(190,262,.72,a*easeOut(p*1.35));shimmerText('神笔码农',420,242,54,a*easeOut((p-.04)*1.35));text('扫码或抖音搜索 / 关注',420,306,26,'750',C.cyan,'center',a*easeOut((p-.16)*1.35));drawQR(118,415,210,a*easeOut((p-.26)*1.45));roundRect(364,438,248,62,31,'rgba(249,115,22,.15)','rgba(249,115,22,.35)',a*easeOut((p-.30)*1.45));text('神笔码农',488,469,32,'900',C.text,'center',a*easeOut((p-.34)*1.45));text('扫码打开抖音搜索页',488,540,22,'700','rgba(240,239,248,.78)','center',a*easeOut((p-.48)*1.45));
-text('或直接搜：神笔码农',488,580,22,'700','rgba(240,239,248,.78)','center',a*easeOut((p-.56)*1.45));pill('#AI编程',196,735,146,C.cyan,a*easeOut((p-.58)*1.45));pill('#程序员',360,735,136,C.purple,a*easeOut((p-.66)*1.45));pill('#技术分享',532,735,158,C.orange,a*easeOut((p-.74)*1.45));text('下期继续拆给你看',W/2,890,26,'600','rgba(240,239,248,.56)','center',a*easeOut((p-.80)*1.35))}
-function drawFrame(progress){const t=progress*DURATION;bg(t);for(let i=0;i<scenes.length;i++){const a=sceneAlpha(progress,i);if(a<=0)continue;const p=sceneProg(progress,i);if(i===0)drawS1(p,a);if(i===1)drawS2(p,a);if(i===2)drawS3(p,a);if(i===3)drawS4(p,a)} }
+function drawS1(p,a){
+  const ia=a*easeOut(p*1.7);
+  logoMark(W/2,300,.96,ia);
+  shimmerText('神笔码农',W/2,500,84,a*easeOut((p-.10)*1.7));
+  text('AI + 程序员',W/2,592,36,'800',C.cyan,'center',a*easeOut((p-.28)*1.7));
+  roundRect(118,676,484,64,32,'rgba(240,239,248,.055)','rgba(240,239,248,.15)',a*easeOut((p-.46)*1.7));
+  text('用程序员视角，看懂 AI 时代',W/2,708,25,'650','rgba(240,239,248,.82)','center',a*easeOut((p-.50)*1.7));
+}
+function drawS2(p,a){
+  logoMark(178,218,.64,a*easeOut(p*1.55));
+  shimmerText('神笔码农',420,205,58,a*easeOut((p-.04)*1.55));
+  text('AI 编程 · 行业新闻 · 实战经验',420,276,23,'700',C.cyan,'center',a*easeOut((p-.14)*1.55));
+  drawQR(112,386,240,a*easeOut((p-.20)*1.55));
+  roundRect(386,430,220,62,31,'rgba(249,115,22,.15)','rgba(249,115,22,.35)',a*easeOut((p-.26)*1.55));
+  text('抖音搜',496,461,24,'800','rgba(240,239,248,.74)','center',a*easeOut((p-.30)*1.55));
+  text('神笔码农',496,548,40,'900',C.text,'center',a*easeOut((p-.38)*1.55));
+  text('关注我，下期继续拆',W/2,760,29,'800',C.gold,'center',a*easeOut((p-.58)*1.55));
+}
+function drawFrame(progress){const t=progress*DURATION;bg(t);for(let i=0;i<scenes.length;i++){const a=sceneAlpha(progress,i);if(a<=0)continue;const p=sceneProg(progress,i);if(i===0)drawS1(p,a);if(i===1)drawS2(p,a)} }
 function updateUI(){const sec=currentTime*DURATION;timeLabel.textContent=`${fmt(sec)} / ${fmt(DURATION)}`;progressBar.style.width=(currentTime*100).toFixed(2)+'%';playBtn.textContent=playing?'⏸':'▶'}
 function loop(ts){if(startTime===null)startTime=ts;if(playing&&!dragging){const elapsed=(ts-startTime)/1000+pauseOffset;currentTime=clamp(elapsed/DURATION);if(currentTime>=1){playing=false;pauseOffset=DURATION;currentTime=1}}drawFrame(currentTime);updateUI();requestAnimationFrame(loop)}
 playBtn.addEventListener('click',()=>{if(playing){pauseOffset=currentTime*DURATION;playing=false}else{startTime=performance.now();pauseOffset=currentTime*DURATION;playing=true}});
