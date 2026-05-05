@@ -4,9 +4,9 @@
     "type": "html",
     "src": "stories/ai-programmer-outro.html",
     "poster": "",
-    "title": "AI + 程序员账号片尾",
-    "description": "固定片尾：技术分享 + 行业新闻导读，关注 CTA",
-    "duration": 13
+    "title": "神笔码农｜AI + 程序员账号片尾",
+    "description": "固定片尾：账号名、Slogan、二维码占位、关注 CTA",
+    "duration": 16
   },
   {
     "id": "demo-video-001",
