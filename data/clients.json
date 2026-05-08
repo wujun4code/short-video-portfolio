@@ -1,0 +1,17 @@
+[
+  {
+    "id": "chen-jian",
+    "name": "陈健",
+    "slug": "chen-jian",
+    "projects": [
+      {
+        "id": "king-mask-ppt",
+        "title": "奇特的面具 · 二年级美术课件",
+        "description": "小学二年级美术课《奇特的面具》互动 PPT 课件，共12页",
+        "url": "clients/chen-jian/king-mask-ppt/index.html",
+        "type": "html",
+        "created_at": "2026-05-08"
+      }
+    ]
+  }
+]
