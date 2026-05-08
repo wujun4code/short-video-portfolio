@@ -21,6 +21,13 @@ body.presenting .stage{border-radius:0;box-shadow:none}
 @media(max-width:700px){:root{--safe-pad:8px;--control-h:58px}.viewport{gap:6px}.control-host{width:calc(100vw - 16px)}.controls{height:52px;border-radius:16px;padding:0 10px;gap:8px}button{height:34px;padding:0 10px;font-size:13px}.small{font-size:12px;min-width:44px}.bar{height:6px;min-width:36px}}
 @media(max-width:380px){.controls{gap:6px;padding:0 8px}button{padding:0 8px;font-size:12px}.small{display:none}}
 @media(orientation:landscape) and (max-height:520px){:root{--safe-pad:6px;--control-h:48px}.viewport{gap:4px}.controls{height:44px;border-radius:14px;padding:0 10px}.control-host{height:48px}button{height:31px;font-size:12px;padding:0 10px}.small{font-size:12px}}
+
+/* 第13页：走秀页独立布局，避免介绍句式遮挡展示卡片 */
+.show-gallery{grid-template-columns:repeat(3,1fr);gap:22px;margin-top:34px;max-width:960px}
+.show-gallery .work{height:142px}
+.show-prompt{left:112px;right:112px;bottom:120px;min-height:98px;padding:18px 28px;z-index:4}
+.show-prompt b{font-size:23px;margin-bottom:6px}
+.show-prompt span{font-size:25px;line-height:1.28}
 </style>
 </head>
 <body>
@@ -67,7 +74,7 @@ if(s.kind==='materials')return `<div class="cards"><div class="card"><b>纸</b><
 if(s.kind==='steps')return `<div class="steps"><div class="step" data-n="1"><b>折</b><span>对折找中心，左右大致平衡</span></div><div class="step" data-n="2"><b>撕</b><span>撕出面具外形，形状不必规则</span></div><div class="step" data-n="3"><b>贴</b><span>组合眼睛、鼻子、嘴巴</span></div><div class="step" data-n="4"><b>添</b><span>添加纹样、颜色和装饰</span></div></div>${promptBox('面具小秘诀','先有大外形，再加五官，最后让纹样和颜色说话。')}`;
 if(s.kind==='tips')return `<div class="cards"><div class="card"><b>突出一个重点</b><span>眼睛、嘴巴或角，至少一个地方特别</span></div><div class="card"><b>纹样有节奏</b><span>重复、对称、粗细变化</span></div><div class="card"><b>颜色有对比</b><span>深浅、冷暖、明暗形成冲击</span></div><div class="card"><b>故事说得出</b><span>它是谁？来自哪里？有什么力量？</span></div></div>`;
 if(s.kind==='task')return `<div class="task">创作要求：<br>① 设计一张奇特面具；<br>② 至少用一种夸张方法；<br>③ 加入纹样和颜色对比；<br>④ 给面具起名字，准备一句介绍。</div><div class="rubric"><div><b>造型</b><span>奇特吗？</span></div><div><b>色彩</b><span>有冲击吗？</span></div><div><b>纹样</b><span>有节奏吗？</span></div><div><b>故事</b><span>说得出来吗？</span></div></div>`;
-if(s.kind==='show')return `<div class="gallery"><div class="work"></div><div class="work"></div><div class="work"></div><div class="work"></div><div class="work"></div><div class="work"></div></div>${promptBox('介绍句式','我的面具叫____，它最特别的地方是____。')}`;
+if(s.kind==='show')return `<div class="gallery show-gallery"><div class="work"></div><div class="work"></div><div class="work"></div></div><div class="prompt show-prompt"><b>介绍句式</b><span>我的面具叫____，它最特别的地方是____。</span></div>`;
 if(s.kind==='king')return `<div class="quote">“真正厉害的面具，<br>不是最复杂，<br>而是最有想法。”</div>${maskHTML()}`;
 if(s.kind==='bye')return `${maskHTML()}<div class="quote">下一次，<br>请带着你的故事回来。</div>`;
 return ''}
