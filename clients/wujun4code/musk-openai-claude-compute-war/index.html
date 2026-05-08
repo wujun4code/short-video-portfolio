@@ -25,6 +25,8 @@ const canvas=document.getElementById('c');
 const ctx=canvas.getContext('2d');
 const W=720,H=1280,DURATION=88;
 let currentSlide=0;
+let slideStart=performance.now();
+let animNow=0;
 
 const scenes=[
   {start:0,end:7.5,fadeI:.8,fadeO:.65,name:'开场钩子'},
@@ -56,7 +58,7 @@ const captions=[
 function clamp(v,a=0,b=1){return Math.max(a,Math.min(b,v))}
 function easeOut(t){return 1-Math.pow(1-clamp(t),3)}
 function easeInOut(t){t=clamp(t);return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
-function pulse(t){return .5+.5*Math.sin(t)}
+function pulse(t){return .5+.5*Math.sin(t+animNow*.85)}
 function sceneAlpha(progress,i){const s=scenes[i],t=progress*DURATION;if(t<s.start||t>s.end)return 0;let a=1;if(t<s.start+s.fadeI)a=(t-s.start)/s.fadeI;if(s.fadeO>0&&t>s.end-s.fadeO)a=(s.end-t)/s.fadeO;return clamp(a)}
 function sceneProg(progress,i){const s=scenes[i],t=progress*DURATION;return clamp((t-s.start)/(s.end-s.start))}
 function scElapsed(progress,i){const s=scenes[i],t=progress*DURATION;return Math.max(0,t-s.start)}
@@ -64,16 +66,49 @@ function fIn(e,start,dur){if(e<start)return 0;return easeOut((e-start)/dur)}
 function fmt(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return `${m}:${String(s).padStart(2,'0')}`}
 function rgba(color,a){return color.replace('1)', `${a})`)}
 function setAlpha(a,fn){ctx.save();ctx.globalAlpha=a;fn();ctx.restore()}
-function text(str,x,y,size,weight='800',color=C.text,align='center',alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='middle';ctx.font=`${weight} ${size}px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif`;ctx.fillText(str,x,y);ctx.restore()}
+function text(str,x,y,size,weight='800',color=C.text,align='center',alpha=1){ctx.save();ctx.globalAlpha=alpha;const enter=(1-clamp(alpha));ctx.translate(0,enter*18);ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='middle';ctx.font=`${weight} ${size}px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif`;ctx.shadowColor=color;ctx.shadowBlur=alpha>.72?10+6*pulse(animNow*1.4):0;ctx.fillText(str,x,y);ctx.restore()}
 function roundRect(x,y,w,h,r,fill,stroke,alpha=1,lineW=1.4){ctx.save();ctx.globalAlpha=alpha;ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineW;ctx.stroke()}ctx.restore()}
 function line(x1,y1,x2,y2,color,alpha=1,width=2){ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore()}
-function glowCircle(x,y,r,color,alpha=1){ctx.save();ctx.globalAlpha=alpha;const g=ctx.createRadialGradient(x,y,1,x,y,r);g.addColorStop(0,color);g.addColorStop(.38,rgba(color,.15));g.addColorStop(1,'rgba(7,7,18,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.restore()}
+function glowCircle(x,y,r,color,alpha=1){ctx.save();ctx.globalAlpha=alpha;const rr=r*(1+.025*Math.sin(animNow*2.1+x*.01));const g=ctx.createRadialGradient(x,y,1,x,y,rr);g.addColorStop(0,color);g.addColorStop(.38,rgba(color,.15));g.addColorStop(1,'rgba(7,7,18,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,rr,0,Math.PI*2);ctx.fill();ctx.restore()}
 function bg(t){
   ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
   const g=ctx.createRadialGradient(W*.52,H*.17,10,W*.52,H*.17,560);g.addColorStop(0,'rgba(124,58,237,.24)');g.addColorStop(.44,'rgba(6,182,212,.10)');g.addColorStop(1,'rgba(7,7,18,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
   const g2=ctx.createRadialGradient(W*.38,H*.78,10,W*.38,H*.78,580);g2.addColorStop(0,'rgba(249,115,22,.18)');g2.addColorStop(.52,'rgba(251,191,36,.07)');g2.addColorStop(1,'rgba(7,7,18,0)');ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
   ctx.save();ctx.globalAlpha=.10;ctx.strokeStyle='rgba(240,239,248,.22)';ctx.lineWidth=1;for(let y=96;y<1180;y+=86){ctx.beginPath();ctx.moveTo(42,y+Math.sin(t*.38+y)*8);ctx.bezierCurveTo(180,y-30,520,y+38,676,y-4);ctx.stroke()}ctx.restore();
   for(let i=0;i<64;i++){const x=(Math.sin(i*12.989+t*.31)*43758.5453%1+1)%1*W;const y=(Math.cos(i*78.233+t*.22)*24634.6345%1+1)%1*H;const a=.025+.045*pulse(t*.75+i);ctx.fillStyle=`rgba(240,239,248,${a})`;ctx.beginPath();ctx.arc(x,y,1+(i%4)*.35,0,Math.PI*2);ctx.fill()}
+}
+function drawKineticOverlay(t){
+  ctx.save();
+  ctx.globalCompositeOperation='lighter';
+  for(let i=0;i<18;i++){
+    const ph=(t*.095+i*.071)%1;
+    const x=-180+ph*(W+360)+Math.sin(t*.9+i)*18;
+    const y=110+i*62+Math.sin(t*.55+i*1.7)*22;
+    const color=i%3===0?C.cyan:i%3===1?C.orange:C.purple;
+    const a=.05+.08*pulse(t*1.2+i);
+    const grad=ctx.createLinearGradient(x-80,y,x+120,y-24);
+    grad.addColorStop(0,'rgba(7,7,18,0)');grad.addColorStop(.45,rgba(color,a));grad.addColorStop(1,'rgba(7,7,18,0)');
+    ctx.strokeStyle=grad;ctx.lineWidth=2+(i%4)*.55;ctx.beginPath();ctx.moveTo(x-90,y);ctx.lineTo(x+130,y-26);ctx.stroke();
+  }
+  for(let i=0;i<7;i++){
+    const x=72+i*96+Math.sin(t*.8+i)*8;
+    const y=210+((t*52+i*173)%760);
+    ctx.fillStyle=`rgba(6,182,212,${.08+.12*pulse(t*2+i)})`;
+    ctx.beginPath();ctx.arc(x,y,2.2+(i%3),0,Math.PI*2);ctx.fill();
+  }
+  ctx.restore();
+  ctx.save();ctx.globalAlpha=.045+.025*pulse(t*1.7);ctx.fillStyle='rgba(255,255,255,1)';for(let y=0;y<H;y+=7){ctx.fillRect(0,y,W,1)}ctx.restore();
+}
+function drawSlideMicroMotion(i,t){
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  const colors=[C.orange,C.cyan,C.gold,C.green,C.purple,C.red];
+  for(let k=0;k<4;k++){
+    const r=64+k*38+12*pulse(t*1.1+k+i);
+    const x=84+((i*47+k*131+t*18)%(W-168));
+    const y=186+((i*91+k*157+t*22)%(H-420));
+    glowCircle(x,y,r,colors[(i+k)%colors.length],.035);
+  }
+  ctx.restore();
 }
 function captionBox(lines,a){
   const h=lines.length*40+42;const y=846;
@@ -102,17 +137,23 @@ function drawS8(p,a,progress){const e=scElapsed(progress,7);const stack=[['GPU',
 function drawS9(p,a,progress){const e=scElapsed(progress,8);glowCircle(W/2,390,275,'rgba(124,58,237,1)',a*fIn(e,.4,1.2)*.43);text('AI 大战打到最后',W/2,248,40,'950',C.text,'center',a*fIn(e,.5,1.0));text('拼的不是模型',W/2,362,38,'900',C.muted,'center',a*fIn(e,1.6,1.0));text('是显卡',W/2,446,64,'950',C.orange,'center',a*fIn(e,2.5,1.0));roundRect(92,588,536,102,34,'rgba(6,182,212,.09)','rgba(6,182,212,.26)',a*fIn(e,3.9,1.0));text('谁背后有 GPU，谁才有体验上限',W/2,639,27,'900',C.cyan,'center',a*fIn(e,4.2,1.0));captionBox(captions[8],a*fIn(e,5.4,1.0))}
 function drawS10(p,a,progress){const e=scElapsed(progress,9);headline(['这不是单个新闻','而是一条产业主线'],150,a*fIn(e,.2,1.0),C.gold,41);roundRect(92,392,536,138,40,'rgba(249,115,22,.10)','rgba(249,115,22,.30)',a*fIn(e,1.8,1.0));text('马斯克是切口',W/2,442,29,'900',C.orange,'center',a*fIn(e,2.1,1.0));text('英伟达是资源分配器',W/2,498,29,'900',C.cyan,'center',a*fIn(e,3.1,1.0));captionBox(captions[9],a*fIn(e,4.1,1.0))}
 function drawS11(p,a,progress){const e=scElapsed(progress,10);glowCircle(W/2,330,270,'rgba(249,115,22,1)',a*fIn(e,.2,1.0)*.34);text('AI 下半场',W/2,272,48,'950',C.text,'center',a*fIn(e,.5,1.0));text('谁控制算力',W/2,386,50,'950',C.orange,'center',a*fIn(e,1.4,1.0));text('谁控制体验上限',W/2,466,42,'950',C.cyan,'center',a*fIn(e,2.2,1.0));roundRect(100,610,520,90,36,'rgba(124,58,237,.13)','rgba(124,58,237,.30)',a*fIn(e,3.0,1.0));text('你觉得算力会越来越贵吗？',W/2,655,30,'950',C.text,'center',a*fIn(e,3.3,1.0));drawFooterBrand(a*fIn(e,3.9,1.0));captionBox(captions[10],a*fIn(e,4.2,1.0))}
-function drawFrame(progress){const t=progress*DURATION;bg(t);for(let i=0;i<scenes.length;i++){const a=sceneAlpha(progress,i);if(a<=0)continue;const p=sceneProg(progress,i);if(i===0)drawS1(p,a,progress);if(i===1)drawS2(p,a,progress);if(i===2)drawS3(p,a,progress);if(i===3)drawS4(p,a,progress);if(i===4)drawS5(p,a,progress);if(i===5)drawS6(p,a,progress);if(i===6)drawS7(p,a,progress);if(i===7)drawS8(p,a,progress);if(i===8)drawS9(p,a,progress);if(i===9)drawS10(p,a,progress);if(i===10)drawS11(p,a,progress)}}
-function slideProgress(i){
+function drawFrame(progress){const t=progress*DURATION+animNow*.42;bg(t);drawKineticOverlay(t);drawSlideMicroMotion(currentSlide,t);for(let i=0;i<scenes.length;i++){const a=sceneAlpha(progress,i);if(a<=0)continue;const p=sceneProg(progress,i);if(i===0)drawS1(p,a,progress);if(i===1)drawS2(p,a,progress);if(i===2)drawS3(p,a,progress);if(i===3)drawS4(p,a,progress);if(i===4)drawS5(p,a,progress);if(i===5)drawS6(p,a,progress);if(i===6)drawS7(p,a,progress);if(i===7)drawS8(p,a,progress);if(i===8)drawS9(p,a,progress);if(i===9)drawS10(p,a,progress);if(i===10)drawS11(p,a,progress)}}
+function slideProgress(i,elapsed=999){
   const s=scenes[i];
   const safeEnd=s.fadeO>0 ? s.end-s.fadeO-.08 : s.end-.08;
-  const t=Math.max(s.start+.01, Math.min(safeEnd, s.start+(s.end-s.start)*.92));
+  const revealSpan=Math.max(.01,safeEnd-s.start);
+  const t=s.start+Math.min(revealSpan,elapsed*1.04);
   return clamp(t/DURATION);
 }
 function renderSlide(i=currentSlide){
   currentSlide=clamp(i,0,scenes.length-1);
-  drawFrame(slideProgress(currentSlide));
+  slideStart=performance.now();
   document.title=`AI 算力战争｜${currentSlide+1}/${scenes.length} ${scenes[currentSlide].name}`;
+}
+function animateStoryboard(ts){
+  animNow=ts/1000;
+  drawFrame(slideProgress(currentSlide,(ts-slideStart)/1000));
+  requestAnimationFrame(animateStoryboard);
 }
 function nextSlide(){renderSlide(currentSlide+1)}
 function prevSlide(){renderSlide(currentSlide-1)}
@@ -129,9 +170,10 @@ canvas.addEventListener('click',(e)=>{
   const r=canvas.getBoundingClientRect();
   if(e.clientX-r.left > r.width/2) nextSlide(); else prevSlide();
 });
-window.__storyboard={duration:()=>DURATION,scenes:()=>scenes,captions:()=>captions,drawFrame,renderSlide,nextSlide,prevSlide,firstSlide,lastSlide,currentSlide:()=>currentSlide,slideProgress,audio:()=>false,aspect:()=> '9:16',mode:()=> 'keyboard-storyboard',controls:()=>false,title:()=> 'AI 算力战争：马斯克 英伟达 3060'};
+window.__storyboard={duration:()=>DURATION,scenes:()=>scenes,captions:()=>captions,drawFrame,renderSlide,nextSlide,prevSlide,firstSlide,lastSlide,currentSlide:()=>currentSlide,slideProgress,audio:()=>false,aspect:()=> '9:16',mode:()=> 'animated-keyboard-storyboard',controls:()=>false,animated:()=>true,title:()=> 'AI 算力战争：马斯克 英伟达 3060'};
 window.__fogsight=window.__storyboard;
 renderSlide(0);
+requestAnimationFrame(animateStoryboard);
 </script>
 </body>
 </html>
