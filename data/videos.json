@@ -8,6 +8,15 @@
     "description": "小学二年级美术课《奇特的面具》互动 PPT 课件，共12页"
   },
   {
+    "id": "musk-openai-claude-compute-war",
+    "type": "html",
+    "src": "clients/wujun4code/musk-openai-claude-compute-war/index.html",
+    "poster": "",
+    "title": "AI 下半场：马斯克、英伟达与算力战争",
+    "description": "9:16 静音 HTML storyboard：无控制面板，键盘左右切换，讲清 GPU、数据中心、电力与 AI 编程体验上限",
+    "duration": 88
+  },
+  {
     "id": "ai-programmer-outro",
     "type": "html",
     "src": "stories/ai-programmer-outro.html",

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+<title>AI 算力战争｜马斯克 × 英伟达 × 3060</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#070712;--text:#F0EFF8;--muted:rgba(240,239,248,.68);--purple:#7C3AED;--orange:#F97316;--cyan:#06B6D4;--gold:#FBBF24;--red:#EF4444;--green:#22C55E;--blue:#3B82F6}
+html,body{width:100%;height:100%;overflow:hidden;background:#070712;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
+body{display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:min(100vw,56.25vh);height:min(100vh,177.78vw);aspect-ratio:9/16;background:#070712;overflow:hidden}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage:focus{outline:none}
+::selection{background:transparent}
+</style>
+</head>
+<body>
+<div class="stage" tabindex="0" aria-label="AI 算力战争 storyboard，使用键盘左右键切换画面">
+  <canvas id="c" width="720" height="1280"></canvas>
+</div>
+<script>
+'use strict';
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const W=720,H=1280,DURATION=88;
+let currentSlide=0;
+
+const scenes=[
+  {start:0,end:7.5,fadeI:.8,fadeO:.65,name:'开场钩子'},
+  {start:7.5,end:15.5,fadeI:.7,fadeO:.65,name:'不是八卦'},
+  {start:15.5,end:23.5,fadeI:.7,fadeO:.65,name:'英伟达转向'},
+  {start:23.5,end:31.5,fadeI:.7,fadeO:.65,name:'3060 信号'},
+  {start:31.5,end:39.5,fadeI:.7,fadeO:.65,name:'产能分配'},
+  {start:39.5,end:48.0,fadeI:.7,fadeO:.65,name:'全行业哄抢'},
+  {start:48.0,end:57.0,fadeI:.7,fadeO:.65,name:'程序员体感'},
+  {start:57.0,end:66.0,fadeI:.7,fadeO:.65,name:'新基础设施'},
+  {start:66.0,end:75.0,fadeI:.7,fadeO:.65,name:'金句升华'},
+  {start:75.0,end:82.0,fadeI:.7,fadeO:.65,name:'提问'},
+  {start:82.0,end:DURATION,fadeI:.7,fadeO:0,name:'片尾'}
+];
+const C={bg:'#070712',text:'#F0EFF8',muted:'rgba(240,239,248,.68)',purple:'#7C3AED',orange:'#F97316',cyan:'#06B6D4',gold:'#FBBF24',red:'#EF4444',green:'#22C55E',blue:'#3B82F6'};
+const captions=[
+  ['你以为马斯克','是在和 OpenAI 吵架？','其实他们抢的是','同一种东西：算力。'],
+  ['xAI、OpenAI、Claude','表面是公司新闻，','本质是 AI 行业','进入算力战争。'],
+  ['英伟达的中心','早就不只是游戏玩家，','真正的大客户','是 B 端数据中心。'],
+  ['甚至有媒体报道，','英伟达可能重新推动','RTX 3060 这类老卡','缓解普通市场需求。'],
+  ['这件事的重点','不是 3060 本身，','而是先进产能','正在优先流向 AI。'],
+  ['AI 编程、视频生成、','企业知识库、自动驾驶、','机器人和云服务，','都在抢同一批 GPU。'],
+  ['以后你用 AI 工具','遇到限额、排队、涨价，','背后可能都是','算力不够分。'],
+  ['GPU、电力、数据中心、','先进封装和调度系统，','正在变成 AI 时代','真正的基础设施。'],
+  ['AI 大战打到最后，','拼的不是谁会讲故事，','而是谁背后','有足够多的显卡。'],
+  ['所以马斯克不是个例，','英伟达也不是配角。','这是一场全行业','抢算力的预告片。'],
+  ['AI 下半场，','谁控制算力，','谁控制体验上限。']
+];
+function clamp(v,a=0,b=1){return Math.max(a,Math.min(b,v))}
+function easeOut(t){return 1-Math.pow(1-clamp(t),3)}
+function easeInOut(t){t=clamp(t);return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+function pulse(t){return .5+.5*Math.sin(t)}
+function sceneAlpha(progress,i){const s=scenes[i],t=progress*DURATION;if(t<s.start||t>s.end)return 0;let a=1;if(t<s.start+s.fadeI)a=(t-s.start)/s.fadeI;if(s.fadeO>0&&t>s.end-s.fadeO)a=(s.end-t)/s.fadeO;return clamp(a)}
+function sceneProg(progress,i){const s=scenes[i],t=progress*DURATION;return clamp((t-s.start)/(s.end-s.start))}
+function scElapsed(progress,i){const s=scenes[i],t=progress*DURATION;return Math.max(0,t-s.start)}
+function fIn(e,start,dur){if(e<start)return 0;return easeOut((e-start)/dur)}
+function fmt(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return `${m}:${String(s).padStart(2,'0')}`}
+function rgba(color,a){return color.replace('1)', `${a})`)}
+function setAlpha(a,fn){ctx.save();ctx.globalAlpha=a;fn();ctx.restore()}
+function text(str,x,y,size,weight='800',color=C.text,align='center',alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='middle';ctx.font=`${weight} ${size}px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif`;ctx.fillText(str,x,y);ctx.restore()}
+function roundRect(x,y,w,h,r,fill,stroke,alpha=1,lineW=1.4){ctx.save();ctx.globalAlpha=alpha;ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineW;ctx.stroke()}ctx.restore()}
+function line(x1,y1,x2,y2,color,alpha=1,width=2){ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore()}
+function glowCircle(x,y,r,color,alpha=1){ctx.save();ctx.globalAlpha=alpha;const g=ctx.createRadialGradient(x,y,1,x,y,r);g.addColorStop(0,color);g.addColorStop(.38,rgba(color,.15));g.addColorStop(1,'rgba(7,7,18,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.restore()}
+function bg(t){
+  ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+  const g=ctx.createRadialGradient(W*.52,H*.17,10,W*.52,H*.17,560);g.addColorStop(0,'rgba(124,58,237,.24)');g.addColorStop(.44,'rgba(6,182,212,.10)');g.addColorStop(1,'rgba(7,7,18,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  const g2=ctx.createRadialGradient(W*.38,H*.78,10,W*.38,H*.78,580);g2.addColorStop(0,'rgba(249,115,22,.18)');g2.addColorStop(.52,'rgba(251,191,36,.07)');g2.addColorStop(1,'rgba(7,7,18,0)');ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalAlpha=.10;ctx.strokeStyle='rgba(240,239,248,.22)';ctx.lineWidth=1;for(let y=96;y<1180;y+=86){ctx.beginPath();ctx.moveTo(42,y+Math.sin(t*.38+y)*8);ctx.bezierCurveTo(180,y-30,520,y+38,676,y-4);ctx.stroke()}ctx.restore();
+  for(let i=0;i<64;i++){const x=(Math.sin(i*12.989+t*.31)*43758.5453%1+1)%1*W;const y=(Math.cos(i*78.233+t*.22)*24634.6345%1+1)%1*H;const a=.025+.045*pulse(t*.75+i);ctx.fillStyle=`rgba(240,239,248,${a})`;ctx.beginPath();ctx.arc(x,y,1+(i%4)*.35,0,Math.PI*2);ctx.fill()}
+}
+function captionBox(lines,a){
+  const h=lines.length*40+42;const y=846;
+  roundRect(48,y,624,h,30,'rgba(7,7,18,.84)','rgba(240,239,248,.22)',a,1.4);
+  for(let i=0;i<lines.length;i++){text(lines[i],W/2,y+42+i*40,29,'850',C.text,'center',a)}
+}
+function tag(str,x,y,color,a,w=176){roundRect(x-w/2,y-24,w,48,24,'rgba(240,239,248,.055)',rgba(color,.24),a,1.2);text(str,x,y,22,'850',color,'center',a)}
+function headline(lines,y,a,mainColor=C.text,size=46){for(let i=0;i<lines.length;i++){text(lines[i],W/2,y+i*(size+13),size,'950',i===lines.length-1?mainColor:C.text,'center',a)}}
+function drawChip(x,y,w,h,label,color,a){
+  roundRect(x,y,w,h,18,'rgba(240,239,248,.06)',rgba(color,.30),a,1.2);
+  for(let i=0;i<5;i++){line(x-10,y+18+i*(h-36)/4,x,y+18+i*(h-36)/4,color,a*.45,2);line(x+w,y+18+i*(h-36)/4,x+w+10,y+18+i*(h-36)/4,color,a*.45,2)}
+  text(label,x+w/2,y+h/2,18,'850',C.text,'center',a)
+}
+function drawDataCenter(a,t,opt={}){const cfg={x:118,y:360,rackW:112,rackH:310,gap:50,rows:6,color:'rgba(6,182,212,1)',...opt};for(let r=0;r<3;r++){const x=cfg.x+r*(cfg.rackW+cfg.gap);roundRect(x,cfg.y,cfg.rackW,cfg.rackH,18,'rgba(240,239,248,.045)',rgba(cfg.color,.20),a);const rowH=Math.min(26,Math.max(18,cfg.rackH/10));const innerX=x+Math.max(12,cfg.rackW*.14);const innerW=cfg.rackW-Math.max(24,cfg.rackW*.28);const top=cfg.y+Math.max(20,cfg.rackH*.09);const step=(cfg.rackH-Math.max(42,cfg.rackH*.18))/(cfg.rows-1);for(let i=0;i<cfg.rows;i++){const y=top+i*step;roundRect(innerX,y,innerW,rowH,7,'rgba(6,182,212,.07)',rgba(cfg.color,.22),a);ctx.save();ctx.globalAlpha=a;ctx.fillStyle=`rgba(6,182,212,${.22+.38*pulse(t*2+i+r)})`;ctx.beginPath();ctx.arc(innerX+Math.min(12,innerW*.18),y+rowH/2,3.6,0,Math.PI*2);ctx.fill();ctx.restore()}}}
+function drawGpuCard(x,y,w,h,label,color,a,scale=1){roundRect(x,y,w,h,24,'rgba(240,239,248,.055)',rgba(color,.32),a,1.5);drawChip(x+28,y+28,w-56,h-56,label,color,a);ctx.save();ctx.globalAlpha=a*.55;ctx.strokeStyle=color;ctx.lineWidth=2;for(let i=0;i<7;i++){line(x+8,y+38+i*16,x+28,y+38+i*16,color,a*.45,2);line(x+w-28,y+38+i*16,x+w-8,y+38+i*16,color,a*.45,2)}ctx.restore()}
+function drawMusk(x,y,a){glowCircle(x,y,132,'rgba(249,115,22,1)',a*.28);ctx.save();ctx.globalAlpha=a;ctx.fillStyle='rgba(240,239,248,.10)';ctx.beginPath();ctx.arc(x,y-24,44,0,Math.PI*2);ctx.fill();roundRect(x-60,y+20,120,106,54,'rgba(240,239,248,.08)','rgba(249,115,22,.26)',1);ctx.restore()}
+function drawFooterBrand(a){roundRect(206,1068,308,58,29,'rgba(124,58,237,.16)','rgba(124,58,237,.28)',a);text('神笔码农',W/2,1097,28,'900',C.text,'center',a)}
+function drawS1(p,a,progress){const e=scElapsed(progress,0);drawMusk(W/2,240,a*fIn(e,.1,1.0));headline(['不是吵架','是抢算力'],454,a*fIn(e,.8,1.0),C.orange,52);tag('马斯克',184,660,C.orange,a*fIn(e,2.0,1.0),150);tag('OpenAI',360,660,C.red,a*fIn(e,2.4,1.0),150);tag('Claude',536,660,C.cyan,a*fIn(e,2.8,1.0),150);captionBox(captions[0],a*fIn(e,3.6,1.0))}
+function drawS2(p,a,progress){const e=scElapsed(progress,1);headline(['AI 新闻','要放在一起看'],130,a*fIn(e,.1,1.0),C.gold,44);const al=a*fIn(e,1.0,1.0);roundRect(86,288,548,334,36,'rgba(10,10,26,.70)','rgba(240,239,248,.16)',al);text('表层：公司竞争 / 法庭争议',W/2,358,28,'900',C.muted,'center',al);line(174,438,546,438,'rgba(240,239,248,.22)',al,2);text('底层：GPU、电力、数据中心',W/2,510,32,'950',C.cyan,'center',a*fIn(e,2.4,1.0));tag('模型战 → 算力战',W/2,670,C.orange,a*fIn(e,3.5,1.0),286);captionBox(captions[1],a*fIn(e,4.4,1.0))}
+function drawS3(p,a,progress){const e=scElapsed(progress,2);headline(['英伟达的中心','正在转向 B 端'],130,a*fIn(e,.1,1.0),C.cyan,43);drawDataCenter(a*fIn(e,1.0,1.0)*.78,progress*DURATION,{x:102,y:330,rackW:102,rackH:260,gap:42,rows:5});const items=[['云厂商',C.cyan],['数据中心',C.gold],['大模型公司',C.purple],['企业 AI',C.green]];items.forEach((it,i)=>{const x=174+(i%2)*372,y=666+Math.floor(i/2)*70;tag(it[0],x,y,it[1],a*fIn(e,2.0+i*.35,1.0),190)});captionBox(captions[2],a*fIn(e,4.4,1.0))}
+function drawS4(p,a,progress){const e=scElapsed(progress,3);headline(['3060 复产','不是怀旧'],126,a*fIn(e,.1,1.0),C.gold,48);drawGpuCard(202,300,316,178,'RTX 3060',C.green,a*fIn(e,1.0,1.0));roundRect(94,552,532,106,32,'rgba(251,191,36,.10)','rgba(251,191,36,.30)',a*fIn(e,2.6,1.0));text('它是消费市场被挤压的信号',W/2,605,28,'900',C.gold,'center',a*fIn(e,3.0,1.0));captionBox(captions[3],a*fIn(e,4.2,1.0))}
+function drawS5(p,a,progress){const e=scElapsed(progress,4);headline(['先进产能','优先流向 AI'],130,a*fIn(e,.1,1.0),C.orange,48);const al=a*fIn(e,1.0,1.0);roundRect(68,298,250,286,34,'rgba(6,182,212,.09)','rgba(6,182,212,.30)',al);text('B 端 AI',193,358,31,'950',C.cyan,'center',al);text('H100 / H200',193,446,25,'900',C.text,'center',al);text('数据中心',193,514,24,'850',C.muted,'center',al);roundRect(402,328,250,226,34,'rgba(34,197,94,.08)','rgba(34,197,94,.26)',a*fIn(e,2.2,1.0));text('消费市场',527,388,28,'900',C.green,'center',a*fIn(e,2.2,1.0));text('旧卡补位',527,474,27,'900',C.gold,'center',a*fIn(e,3.0,1.0));line(324,440,396,440,C.gold,a*fIn(e,3.5,1.0),5);captionBox(captions[4],a*fIn(e,4.4,1.0))}
+function drawS6(p,a,progress){const e=scElapsed(progress,5);headline(['现在不是一家在抢','是全行业在抢'],116,a*fIn(e,.1,1.0),C.red,42);const nodes=[['AI 编程',178,322,C.orange],['视频生成',542,322,C.cyan],['企业知识库',178,488,C.green],['自动驾驶',542,488,C.gold],['机器人',178,654,C.purple],['云服务',542,654,C.blue]];glowCircle(W/2,500,170,'rgba(239,68,68,1)',a*fIn(e,1.0,1.0)*.20);drawChip(292,452,136,86,'GPU',C.red,a*fIn(e,1.0,1.0));nodes.forEach((n,i)=>{const al=a*fIn(e,1.4+i*.22,1.0);roundRect(n[1]-92,n[2]-34,184,68,26,'rgba(240,239,248,.055)',rgba(n[3],.28),al);text(n[0],n[1],n[2],22,'900',n[3],'center',al);line(n[1],n[2]+(n[2]<500?38:-38),W/2,n[2]<500?452:538,n[3],al*.55,2)});captionBox(captions[5],a*fIn(e,5.1,1.0))}
+function drawS7(p,a,progress){const e=scElapsed(progress,6);headline(['程序员的体感','会越来越明显'],130,a*fIn(e,.1,1.0),C.cyan,42);const items=[['限额',C.orange],['排队',C.gold],['涨价',C.red],['降速',C.purple]];roundRect(102,276,516,336,34,'rgba(10,10,26,.72)','rgba(240,239,248,.14)',a*fIn(e,.9,1.0));text('AI Coding Workbench',W/2,346,28,'900',C.cyan,'center',a*fIn(e,1.2,1.0));items.forEach((it,i)=>{const x=164+(i%2)*196,y=458+Math.floor(i/2)*84,al=a*fIn(e,2.0+i*.45,1.0);roundRect(x-72,y-30,144,60,24,'rgba(240,239,248,.055)',rgba(it[1],.30),al);text(it[0],x,y,24,'900',it[1],'center',al)});captionBox(captions[6],a*fIn(e,5.0,1.0))}
+function drawS8(p,a,progress){const e=scElapsed(progress,7);const stack=[['GPU',C.cyan],['电力',C.gold],['数据中心',C.orange],['先进封装',C.purple],['调度系统',C.green]];text('AI 新基础设施',W/2,140,48,'950',C.text,'center',a*fIn(e,.1,1.0));stack.forEach((s,i)=>{const y=272+i*82,al=a*fIn(e,.8+i*.55,1.0),w=248+i*55,x=(W-w)/2;roundRect(x,y,w,54,22,'rgba(240,239,248,.055)',rgba(s[1],.28),al);text(s[0],W/2,y+27,24,'900',s[1],'center',al);if(i>0)line(W/2,y-26,W/2,y,s[1],al*.65,3)});captionBox(captions[7],a*fIn(e,5.4,1.0))}
+function drawS9(p,a,progress){const e=scElapsed(progress,8);glowCircle(W/2,390,275,'rgba(124,58,237,1)',a*fIn(e,.4,1.2)*.43);text('AI 大战打到最后',W/2,248,40,'950',C.text,'center',a*fIn(e,.5,1.0));text('拼的不是模型',W/2,362,38,'900',C.muted,'center',a*fIn(e,1.6,1.0));text('是显卡',W/2,446,64,'950',C.orange,'center',a*fIn(e,2.5,1.0));roundRect(92,588,536,102,34,'rgba(6,182,212,.09)','rgba(6,182,212,.26)',a*fIn(e,3.9,1.0));text('谁背后有 GPU，谁才有体验上限',W/2,639,27,'900',C.cyan,'center',a*fIn(e,4.2,1.0));captionBox(captions[8],a*fIn(e,5.4,1.0))}
+function drawS10(p,a,progress){const e=scElapsed(progress,9);headline(['这不是单个新闻','而是一条产业主线'],150,a*fIn(e,.2,1.0),C.gold,41);roundRect(92,392,536,138,40,'rgba(249,115,22,.10)','rgba(249,115,22,.30)',a*fIn(e,1.8,1.0));text('马斯克是切口',W/2,442,29,'900',C.orange,'center',a*fIn(e,2.1,1.0));text('英伟达是资源分配器',W/2,498,29,'900',C.cyan,'center',a*fIn(e,3.1,1.0));captionBox(captions[9],a*fIn(e,4.1,1.0))}
+function drawS11(p,a,progress){const e=scElapsed(progress,10);glowCircle(W/2,330,270,'rgba(249,115,22,1)',a*fIn(e,.2,1.0)*.34);text('AI 下半场',W/2,272,48,'950',C.text,'center',a*fIn(e,.5,1.0));text('谁控制算力',W/2,386,50,'950',C.orange,'center',a*fIn(e,1.4,1.0));text('谁控制体验上限',W/2,466,42,'950',C.cyan,'center',a*fIn(e,2.2,1.0));roundRect(100,610,520,90,36,'rgba(124,58,237,.13)','rgba(124,58,237,.30)',a*fIn(e,3.0,1.0));text('你觉得算力会越来越贵吗？',W/2,655,30,'950',C.text,'center',a*fIn(e,3.3,1.0));drawFooterBrand(a*fIn(e,3.9,1.0));captionBox(captions[10],a*fIn(e,4.2,1.0))}
+function drawFrame(progress){const t=progress*DURATION;bg(t);for(let i=0;i<scenes.length;i++){const a=sceneAlpha(progress,i);if(a<=0)continue;const p=sceneProg(progress,i);if(i===0)drawS1(p,a,progress);if(i===1)drawS2(p,a,progress);if(i===2)drawS3(p,a,progress);if(i===3)drawS4(p,a,progress);if(i===4)drawS5(p,a,progress);if(i===5)drawS6(p,a,progress);if(i===6)drawS7(p,a,progress);if(i===7)drawS8(p,a,progress);if(i===8)drawS9(p,a,progress);if(i===9)drawS10(p,a,progress);if(i===10)drawS11(p,a,progress)}}
+function slideProgress(i){
+  const s=scenes[i];
+  const safeEnd=s.fadeO>0 ? s.end-s.fadeO-.08 : s.end-.08;
+  const t=Math.max(s.start+.01, Math.min(safeEnd, s.start+(s.end-s.start)*.92));
+  return clamp(t/DURATION);
+}
+function renderSlide(i=currentSlide){
+  currentSlide=clamp(i,0,scenes.length-1);
+  drawFrame(slideProgress(currentSlide));
+  document.title=`AI 算力战争｜${currentSlide+1}/${scenes.length} ${scenes[currentSlide].name}`;
+}
+function nextSlide(){renderSlide(currentSlide+1)}
+function prevSlide(){renderSlide(currentSlide-1)}
+function firstSlide(){renderSlide(0)}
+function lastSlide(){renderSlide(scenes.length-1)}
+window.addEventListener('keydown',(e)=>{
+  const k=e.key;
+  if(['ArrowRight','PageDown',' ','Enter'].includes(k)){e.preventDefault();nextSlide()}
+  else if(['ArrowLeft','PageUp','Backspace'].includes(k)){e.preventDefault();prevSlide()}
+  else if(k==='Home'){e.preventDefault();firstSlide()}
+  else if(k==='End'){e.preventDefault();lastSlide()}
+});
+canvas.addEventListener('click',(e)=>{
+  const r=canvas.getBoundingClientRect();
+  if(e.clientX-r.left > r.width/2) nextSlide(); else prevSlide();
+});
+window.__storyboard={duration:()=>DURATION,scenes:()=>scenes,captions:()=>captions,drawFrame,renderSlide,nextSlide,prevSlide,firstSlide,lastSlide,currentSlide:()=>currentSlide,slideProgress,audio:()=>false,aspect:()=> '9:16',mode:()=> 'keyboard-storyboard',controls:()=>false,title:()=> 'AI 算力战争：马斯克 英伟达 3060'};
+window.__fogsight=window.__storyboard;
+renderSlide(0);
+</script>
+</body>
+</html>
