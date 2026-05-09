@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>预览：跑男收视率创新低 · 闻🐟百晓生</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans SC', sans-serif; background: #0a0a0a; color: #eee; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px 80px; }
+  
+  .header { margin-bottom: 24px; }
+  .brand { font-size: .8rem; color: #ff6b35; letter-spacing: 2px; margin-bottom: 8px; }
+  h1 { font-size: 1.6rem; font-weight: 900; line-height: 1.3; margin-bottom: 8px; }
+  .sub { color: #888; font-size: .9rem; }
+
+  .player { background: #1a1a1a; border-radius: 16px; padding: 20px; margin-bottom: 28px; border: 1px solid #333; }
+  .player audio { width: 100%; outline: none; }
+  .player-info { display: flex; justify-content: space-between; color: #666; font-size: .8rem; margin-top: 8px; }
+
+  .scene { background: #141414; border-radius: 14px; margin-bottom: 16px; overflow: hidden; border-left: 3px solid #ff6b35; }
+  .scene-header { padding: 12px 16px; background: #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+  .scene-label { font-size: .75rem; color: #ff6b35; font-weight: 700; }
+  .scene-time { font-size: .75rem; color: #666; }
+  .scene-content { padding: 14px 16px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 14px; }
+  @media (max-width: 600px) { .scene-content { grid-template-columns: 1fr; } }
+  
+  .visual { background: #1e1e1e; border-radius: 10px; padding: 12px; }
+  .visual h4 { font-size: .7rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .visual p { font-size: .82rem; color: #aaa; line-height: 1.5; }
+  
+  .narration { background: #1e1e1e; border-radius: 10px; padding: 12px; }
+  .narration h4 { font-size: .7rem; color: #4fc3f7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .narration p { font-size: .85rem; color: #ccc; line-height: 1.7; }
+  .narration .hl { color: #ff6b35; }
+
+  .outro-box { margin-top: 28px; text-align: center; padding: 24px; background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border-radius: 14px; border: 1px solid #333; }
+  .outro-box .name { font-size: 1.3rem; font-weight: 900; }
+  .outro-box .tagline { color: #666; font-size: .85rem; margin-top: 4px; }
+  
+  .progress-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0a0a0a; border-top: 1px solid #222; padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+  .progress-bar .mini-player { flex: 1; }
+  .progress-bar .mini-player audio { width: 100%; height: 36px; }
+
+  /* Active scene highlight */
+  .scene.active { border-left-color: #4fc3f7; box-shadow: 0 0 20px rgba(79,195,247,0.05); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="brand">闻🐟百晓生 · 预览</div>
+    <h1>跑男收视率创新低：一档综艺是怎么"老"死的</h1>
+    <div class="sub">⏱ 3:00 · 江湖故事会风格 · TTS: Yunxi</div>
+  </div>
+
+  <!-- Fixed Player -->
+  <div class="player">
+    <audio controls autoplay>
+      <source src="narration-rating.mp3" type="audio/mp3">
+    </audio>
+    <div class="player-info">
+      <span>🎙 点击播放试听</span>
+      <span>2026-05-09</span>
+    </div>
+  </div>
+
+  <!-- Scene 1 -->
+  <div class="scene" data-time="0">
+    <div class="scene-header">
+      <span class="scene-label">🎬 开场</span>
+      <span class="scene-time">0:00 - 0:20</span>
+    </div>
+    <div class="scene-content">
+      <div class="visual">
+        <h4>🎨 画面</h4>
+        <p>手机刷微博视角 → 热搜截屏"跑男新一期收视率创新低"<br><br>快速混剪：往期撕名牌高光 vs 现在划船，对比强烈</p>
+      </div>
+      <div class="narration">
+        <h4>🎙 旁白</h4>
+        <p>刷到这条热搜的时候，我愣了一下。<br><br>不是惊讶它低了——是惊讶还有人看。<br><br>跑男播了十几年，收视率跌到 <span class="hl">0.38%</span>，创历史新低。<br><br>今天聊聊——<span class="hl">一档综艺是怎么"老"死的。</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 2 -->
+  <div class="scene" data-time="20">
+    <div class="scene-header">
+      <span class="scene-label">🔍 导火索</span>
+      <span class="scene-time">0:20 - 0:55</span>
+    </div>
+    <div class="scene-content">
+      <div class="visual">
+        <h4>🎨 画面</h4>
+        <p>白鹿节目片段+评论截图，轻松节奏快切<br><br>字幕放大：<span style="color:#ff6b35">「是挺晒的，但真不累」</span></p>
+      </div>
+      <div class="narration">
+        <h4>🎙 旁白</h4>
+        <p>白鹿坐香蕉船飘了一路，回头问刚游完 <span class="hl">500米</span> 的——你累吗？<br><br>加上叫郑恺"老人家"、指挥李晨"你肯定输"……<br><br>口碑直接翻车。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 3 -->
+  <div class="scene" data-time="55">
+    <div class="scene-header">
+      <span class="scene-label">🧩 不只是一个人的问题</span>
+      <span class="scene-time">0:55 - 1:45</span>
+    </div>
+    <div class="scene-content">
+      <div class="visual">
+        <h4>🎨 画面</h4>
+        <p>时间线动画：<br><span style="color:#4fc3f7">2023年0.37% → 2024年被压制 → 2026年0.38%</span><br><br>"白鹿在不在？在。" 重复三次<br><br>左右对比：以前的游戏 vs 现在的游戏</p>
+      </div>
+      <div class="narration">
+        <h4>🎙 旁白</h4>
+        <p>2023年跌到0.37%，白鹿在。2024年被压着打，白鹿在。2026年创新低，白鹿还在。<br><br><span class="hl">一个人能背三年的锅？</span><br><br>以前撕名牌、追逐战、高空挑战——现在香蕉船、敲大鼓。<br><br>以前的嘉宾各有各的活法，现在的全一个模子。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 4 -->
+  <div class="scene" data-time="105">
+    <div class="scene-header">
+      <span class="scene-label">💬 大实话</span>
+      <span class="scene-time">1:45 - 2:20</span>
+    </div>
+    <div class="scene-content">
+      <div class="visual">
+        <h4>🎨 画面</h4>
+        <p>综艺海报快切：<br>跑男→极挑→向往的生活→歌手→好声音<br><br>语速加快，像跟朋友聊天</p>
+      </div>
+      <div class="narration">
+        <h4>🎙 旁白</h4>
+        <p>说句大实话。<br><br>跑男的病，不是跑男自己的病。<br><br>这些综艺有一个共同的爹——<span class="hl">韩国模式</span>。<br><br>2014年引进是降维打击。但十年了，人家在变，我们不敢动。<br><br>怕改砸了，连老本都赔进去。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 5 -->
+  <div class="scene" data-time="140">
+    <div class="scene-header">
+      <span class="scene-label">💡 结尾</span>
+      <span class="scene-time">2:20 - 2:50</span>
+    </div>
+    <div class="scene-content">
+      <div class="visual">
+        <h4>🎨 画面</h4>
+        <p>李晨船桨照片缓缓划过<br><br>音乐慢下来<br><br>→ 停顿一秒 → 点睛</p>
+      </div>
+      <div class="narration">
+        <h4>🎙 旁白</h4>
+        <p>李晨发微博："看到这支船桨，你也会怀念当初吗？"<br><br>评论区全是青春的回忆。<br><br>观众在怀念过去，是因为现在的节目没有给他们一个 <span class="hl">"不怀念"</span> 的理由。<br><br>跑男今天的收视率，可能还真不是最低的。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Outro -->
+  <div class="outro-box">
+    <div class="name">闻🐟百晓生</div>
+    <div class="tagline">江湖不大，有瓜就吃</div>
+    <div style="margin-top: 12px; color: #555; font-size: .75rem;">2026-05-09 · 3min · TTS预览</div>
+  </div>
+
+</div>
+
+<!-- Fixed Bottom Player -->
+<div class="progress-bar">
+  <div class="mini-player">
+    <audio controls>
+      <source src="narration-rating.mp3" type="audio/mp3">
+    </audio>
+  </div>
+  <span style="color:#666;font-size:.7rem;white-space:nowrap;">闻🐟百晓生</span>
+</div>
+
+<script>
+// Auto-highlight scenes based on audio time
+const audios = document.querySelectorAll('audio');
+const scenes = document.querySelectorAll('.scene');
+const timeRanges = [
+  [0, 20], [20, 55], [55, 105], [105, 140], [140, 180]
+];
+
+audios.forEach(audio => {
+  audio.addEventListener('timeupdate', () => {
+    const t = audio.currentTime;
+    scenes.forEach((s, i) => {
+      const [start, end] = timeRanges[i] || [0, 0];
+      s.classList.toggle('active', t >= start && t < end);
+    });
+  });
+});
+</script>
+
+</body>
+</html>
