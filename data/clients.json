@@ -20,6 +20,14 @@
     "slug": "wujun4code",
     "projects": [
       {
+        "id": "running-man-low-rating",
+        "title": "跑男收视低位争议 · 字幕版故事预览",
+        "description": "闻🐟百晓生：Manong 克隆音色慢节奏版，正确文案字幕，动态避让画面文案。",
+        "url": "clients/wujun4code/running-man-low-rating/index.html",
+        "type": "html",
+        "created_at": "2026-05-09"
+      },
+      {
         "id": "musk-openai-claude-compute-war",
         "title": "AI 下半场：马斯克、英伟达与算力战争",
         "description": "9:16 静音 HTML storyboard：无控制面板，键盘左右切换，讲清 GPU、数据中心、电力与 AI 编程体验上限",

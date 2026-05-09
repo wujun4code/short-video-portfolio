@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>跑男收视低位争议 · 字幕版故事预览</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#0a0a0a;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif}
+
+/* Phone-frame container: centers and scales 9:16 stage */
+.phone-frame{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1080px;height:1920px;background:linear-gradient(160deg,#0a0a0a 0%,#1a0a0a 40%,#0d0d1a 100%);overflow:hidden;transform-origin:center center}
+
+/* Scene container */
+.scene{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;pointer-events:none;transition:opacity .5s}
+.scene.active{opacity:1;pointer-events:auto}
+
+/* Shared element types */
+.title-lg{font-size:72px;font-weight:900;color:#fff;line-height:1.3;text-align:center}
+.title-md{font-size:52px;font-weight:700;color:#eee;line-height:1.4;text-align:center}
+.body-text{font-size:36px;font-weight:400;color:#ccc;line-height:1.6;text-align:center}
+.highlight{color:#ff6b35}
+.accent-blue{color:#4fc3f7}
+.accent-yellow{color:#ffd54f}
+.small-text{font-size:28px;color:#888}
+.data-num{font-size:96px;font-weight:900;background:linear-gradient(135deg,#ff6b35,#ef5350);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* Fade up animation */
+.fade-up{opacity:0;transform:translateY(30px);transition:all .8s ease}
+.fade-up.show{opacity:1;transform:translateY(0)}
+.fade-in{opacity:0;transition:opacity .6s ease}
+.fade-in.show{opacity:1}
+
+/* Grid for images */
+.img-grid{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.img-card{background:#1a1a1a;border-radius:16px;padding:24px 20px;border:1px solid #333;min-width:300px;text-align:center}
+.img-card .label{font-size:24px;color:#888;margin-bottom:8px}
+.img-card .value{font-size:40px;font-weight:700;color:#fff}
+
+/* Timeline */
+.timeline-item{display:flex;align-items:center;gap:24px;margin-bottom:28px;opacity:0;transform:translateX(-20px);transition:all .6s ease}
+.timeline-item.show{opacity:1;transform:translateX(0)}
+.timeline-dot{width:14px;height:14px;border-radius:50%;background:#ff6b35;flex-shrink:0}
+.timeline-year{font-size:36px;font-weight:700;color:#ff6b35;width:120px;flex-shrink:0}
+.timeline-text{font-size:32px;color:#ccc}
+
+/* Outro */
+.outro-logo{font-size:100px;margin-bottom:20px}
+.outro-name{font-size:64px;font-weight:900;color:#fff;letter-spacing:4px}
+.outro-tagline{font-size:32px;color:#888;margin-top:12px}
+
+
+/* Subtitle overlay */
+#subtitle{position:absolute;left:42px;right:42px;bottom:28px;z-index:50;display:flex;justify-content:center;pointer-events:none}
+#subtitle .caption-text{max-width:996px;padding:12px 18px;border-radius:14px;background:rgba(0,0,0,.72);box-shadow:0 8px 28px rgba(0,0,0,.36);color:#fff;font-size:34px;font-weight:800;line-height:1.28;text-align:center;letter-spacing:.2px;text-shadow:0 3px 8px rgba(0,0,0,.9);opacity:0;transform:translateY(6px);transition:opacity .12s ease,transform .12s ease}
+#subtitle.show .caption-text{opacity:1;transform:translateY(0)}
+
+/* Background decorative elements */
+.bg-circle{position:absolute;border-radius:50%;opacity:.04;pointer-events:none}
+.nowrap{white-space:nowrap;display:inline-block}
+/* Deterministic frame inspection mode: index.html?t=43&still=1 */
+.still-mode .scene,.still-mode .fade-up{transition:none!important}
+</style>
+</head>
+<body>
+<div class="phone-frame">
+<div id="stage">
+
+<!-- ==================== SCENE 1: HOOK ==================== -->
+<div id="scene-hook" class="scene" data-start="0" data-end="25.5">
+  <div class="bg-circle" style="width:800px;height:800px;background:#ff6b35;top:-200px;right:-200px"></div>
+  <div class="bg-circle" style="width:500px;height:500px;background:#4fc3f7;bottom:300px;left:-150px"></div>
+
+  <!-- Phone mockup -->
+  <div style="position:absolute;top:200px;left:50%;transform:translateX(-50%);width:400px;height:500px;background:#1a1a1a;border-radius:40px;border:3px solid #333;padding:20px">
+    <div style="background:#2a2a2a;border-radius:20px;padding:16px;height:100%">
+      <div style="display:flex;gap:8px;margin-bottom:12px"><span style="width:8px;height:8px;border-radius:50%;background:#ff5f56"></span><span style="width:8px;height:8px;border-radius:50%;background:#ffbd2e"></span><span style="width:8px;height:8px;border-radius:50%;background:#27c93f"></span></div>
+      <div style="display:flex;gap:10px;margin-bottom:16px"><span style="font-size:20px;color:#888">🔥 热搜</span><span style="font-size:20px;color:#888">·</span><span style="font-size:20px;color:#888">1</span></div>
+      <div style="color:#ff6b35;font-size:28px;font-weight:700;margin-bottom:8px">热</div>
+      <div style="color:#fff;font-size:24px;font-weight:700;line-height:1.3"><span class="nowrap">跑男新一季</span><br>收视跌破0.4</div>
+    </div>
+  </div>
+
+  <div id="hook-text" style="position:absolute;top:760px;left:80px;right:80px;text-align:center">
+    <div class="fade-up" data-t="2"><span class="title-lg">0.<span class="highlight">3899</span>%</span></div>
+    <div class="fade-up" data-t="4.1" style="margin-top:16px"><span class="body-text">争议很热，<span class="highlight">口径先说清</span></span></div>
+    <div class="fade-up" data-t="8.2" style="margin-top:40px"><span class="title-md">一档综艺是怎么<span class="highlight">慢慢变老</span>的</span></div>
+    <div class="fade-up" data-t="15.3" style="margin-top:54px"><span class="small-text">很多人把锅扣给白鹿</span></div>
+    <div class="fade-up" data-t="21.4" style="margin-top:22px"><span class="small-text">但真是一个人的问题吗？</span></div>
+  </div>
+</div>
+
+<!-- ==================== SCENE 2: 导火索 ==================== -->
+<div id="scene-trigger" class="scene" data-start="25.5" data-end="56">
+  <div class="bg-circle" style="width:700px;height:700px;background:#ef5350;top:-160px;left:-180px;opacity:.06"></div>
+  <div class="bg-circle" style="width:520px;height:520px;background:#4fc3f7;bottom:260px;right:-160px;opacity:.05"></div>
+
+  <!-- Top bar: matches script-v2 0:20-0:55 -->
+  <div class="fade-up" data-t="25.5" style="position:absolute;top:78px;left:70px;right:70px;text-align:center">
+    <div style="font-size:40px;color:#ef5350;font-weight:900;margin-bottom:10px">导火索</div>
+    <div class="title-md" style="font-size:44px">白鹿这茬，为什么炸了？</div>
+  </div>
+
+  <!-- Program clip simulation: banana boat vs swimmers, not a blank card -->
+  <div class="fade-up" data-t="27.6" style="position:absolute;top:305px;left:42px;right:42px;height:440px;background:linear-gradient(180deg,#19364a 0%,#0e2232 58%,#07141d 100%);border-radius:30px;overflow:hidden;border:2px solid #294f66;box-shadow:0 24px 80px #0008">
+    <div style="position:absolute;top:22px;left:24px;background:#ef5350;color:#fff;font-size:24px;font-weight:900;border-radius:999px;padding:8px 18px">节目片段还原</div>
+    <div style="position:absolute;top:24px;right:24px;color:#a7dfff;font-size:24px;font-weight:700">水上项目</div>
+
+    <!-- water waves -->
+    <svg viewBox="0 0 996 440" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true">
+      <defs>
+        <linearGradient id="bananaGrad" x1="0" x2="1">
+          <stop offset="0" stop-color="#ffd54f"/>
+          <stop offset="1" stop-color="#ff8f00"/>
+        </linearGradient>
+      </defs>
+      <path d="M0 250 C110 220 190 280 300 250 S500 220 610 250 800 282 972 240 V420 H0Z" fill="#123e5d" opacity=".9"/>
+      <path d="M0 315 C130 285 220 340 350 310 S570 275 700 315 850 350 972 305" fill="none" stroke="#4fc3f7" stroke-width="5" opacity=".45"/>
+      <path d="M0 370 C140 340 260 395 410 360 S640 330 780 365 895 395 972 360" fill="none" stroke="#8bdfff" stroke-width="4" opacity=".25"/>
+
+      <!-- banana boat left -->
+      <g transform="translate(110 176)">
+        <path d="M20 82 C95 128 235 128 320 78 C288 138 62 152 20 82Z" fill="url(#bananaGrad)" stroke="#fff3a0" stroke-width="5"/>
+        <path d="M58 86 C110 106 230 105 286 84" fill="none" stroke="#8a4d00" stroke-width="5" opacity=".55"/>
+        <circle cx="126" cy="48" r="22" fill="#ffd1bd"/>
+        <circle cx="208" cy="46" r="22" fill="#ffd1bd"/>
+        <path d="M102 72 H150 L162 108 H92Z" fill="#ff6b35"/>
+        <path d="M184 70 H232 L242 108 H174Z" fill="#ffb74d"/>
+
+      </g>
+
+      <!-- swimmers right -->
+      <g transform="translate(590 188)">
+        <path d="M-10 95 C42 73 90 120 142 95 S242 72 300 98" fill="none" stroke="#8bdfff" stroke-width="9" opacity=".85"/>
+        <circle cx="52" cy="55" r="24" fill="#ffd1bd"/>
+        <path d="M76 76 C112 65 138 66 174 82" fill="none" stroke="#4fc3f7" stroke-width="12" stroke-linecap="round"/>
+        <circle cx="196" cy="62" r="22" fill="#ffd1bd"/>
+        <path d="M218 80 C250 72 270 77 302 94" fill="none" stroke="#4fc3f7" stroke-width="11" stroke-linecap="round"/>
+
+      </g>
+    </svg>
+    <div style="position:absolute;left:48px;bottom:22px;width:405px;background:#06131df0;border-radius:18px;padding:14px 12px;text-align:center;border:1px solid #ffd54f66">
+      <div style="font-size:32px;color:#ffd54f;font-weight:900;line-height:1.2">香蕉船</div>
+      <div style="font-size:24px;color:#fff;font-weight:800;margin-top:5px;line-height:1.2">白鹿 / 孟子义 · 最轻松</div>
+    </div>
+    <div style="position:absolute;right:48px;bottom:22px;width:405px;background:#06131df0;border-radius:18px;padding:14px 12px;text-align:center;border:1px solid #4fc3f766">
+      <div style="font-size:30px;color:#4fc3f7;font-weight:900;line-height:1.2">时代少年团</div>
+      <div style="font-size:24px;color:#fff;font-weight:800;margin-top:5px;line-height:1.2">500米游泳接力</div>
+    </div>
+  </div>
+
+  <!-- Script quote sequence -->
+  <div class="fade-up" data-t="36.7" style="position:absolute;top:785px;left:62px;right:62px;background:#251414;border-radius:24px;padding:30px 26px;border:2px solid #ef5350;text-align:center;box-shadow:0 18px 60px #0007">
+    <div style="font-size:36px;color:#fff;font-weight:900;line-height:1.45">「你们真的觉得累吗？」</div>
+    <div style="font-size:30px;color:#ff8a65;font-weight:800;margin-top:12px">争议字幕：晒是真晒，累是真不累</div>
+  </div>
+
+  <div class="fade-up" data-t="40.8" style="position:absolute;top:1000px;left:82px;right:82px;text-align:center">
+    <div style="font-size:33px;color:#ddd;line-height:1.65">她坐<span class="highlight" style="font-weight:900">香蕉船</span>，轻松漂了一路<br>回头问刚游完<span class="accent-blue" style="font-weight:900">500米游泳接力</span>的队友：<br><span class="highlight" style="font-weight:900;font-size:42px">你累吗？</span></div>
+  </div>
+
+  <!-- Additional controversies -->
+  <div style="position:absolute;top:1210px;left:80px;right:80px">
+    <div class="fade-up" data-t="48.9" style="display:flex;align-items:center;gap:16px;margin-bottom:18px;background:#1a1a1a;border-radius:16px;padding:18px 22px;border:1px solid #333">
+      <span style="font-size:30px">😬</span>
+      <span style="font-size:28px;color:#ccc">叫<span class="nowrap">郑恺「老人家」</span></span>
+    </div>
+    <div class="fade-up" data-t="52" style="display:flex;align-items:center;gap:16px;background:#1a1a1a;border-radius:16px;padding:18px 22px;border:1px solid #333">
+      <span style="font-size:30px">🤷</span>
+      <span style="font-size:28px;color:#ccc">指挥<span class="nowrap">李晨「你肯定输」</span></span>
+    </div>
+  </div>
+
+  <div class="fade-up" data-t="54" style="position:absolute;bottom:170px;left:80px;right:80px;text-align:center">
+    <span class="title-md" style="font-size:48px">这些细节叠一起，口碑<span class="highlight">翻车</span></span>
+  </div>
+</div>
+
+<!-- ==================== SCENE 3: 收视口径 ==================== -->
+<div id="scene-time-line" class="scene" data-start="56" data-end="97.8">
+  <div class="bg-circle" style="width:720px;height:720px;background:#ff6b35;top:-180px;right:-180px;opacity:.045"></div>
+
+  <div style="position:absolute;top:105px;left:80px;right:80px;text-align:center">
+    <div class="fade-up" data-t="56" style="font-size:34px;color:#888;margin-bottom:12px">不是因为一个人就不行</div>
+    <div class="fade-up title-md" data-t="60.1" style="font-size:52px">先把<span class="highlight">收视口径</span>讲清</div>
+  </div>
+
+  <div style="position:absolute;top:310px;left:76px;right:76px">
+    <div class="fade-up" data-t="62.1" style="background:#171717;border:1px solid #333;border-radius:20px;padding:24px 26px;margin-bottom:22px;display:flex;align-items:center;gap:24px;box-shadow:0 14px 50px #0005">
+      <div style="width:150px;flex-shrink:0;font-size:36px;font-weight:900;color:#ff6b35">2023</div>
+      <div style="font-size:31px;color:#ddd;line-height:1.5"><span class="highlight nowrap">0.3747</span> 曾引争议<br><span style="font-size:25px;color:#888">官微随后用 3.384 回怼</span></div>
+    </div>
+    <div class="fade-up" data-t="73.3" style="background:#171717;border:1px solid #333;border-radius:20px;padding:24px 26px;margin-bottom:22px;display:flex;align-items:center;gap:24px;box-shadow:0 14px 50px #0005">
+      <div style="width:150px;flex-shrink:0;font-size:32px;line-height:1.18;font-weight:900;color:#ffd54f">2026<br>首期</div>
+      <div style="font-size:31px;color:#ddd;line-height:1.5"><span class="highlight nowrap">0.3899%</span> 确实不好看<br><span style="font-size:25px;color:#888">但不能和 0.37 硬比</span></div>
+    </div>
+    <div class="fade-up" data-t="81.5" style="background:#171717;border:1px solid #333;border-radius:20px;padding:24px 26px;display:flex;align-items:center;gap:24px;box-shadow:0 14px 50px #0005">
+      <div style="width:150px;flex-shrink:0;font-size:32px;line-height:1.18;font-weight:900;color:#ef5350">2026<br>三期</div>
+      <div style="font-size:31px;color:#ddd;line-height:1.5">网传约 <span class="highlight nowrap">0.27%</span><br><span style="font-size:25px;color:#888">待核实，但趋势更刺眼</span></div>
+    </div>
+  </div>
+
+  <div class="fade-up" data-t="93.7" style="position:absolute;bottom:155px;left:70px;right:70px;background:#201712;border:1px solid #55311f;border-radius:24px;padding:30px;text-align:center">
+    <span class="body-text">重点不是某个数字，<br>而是<span class="highlight nowrap">长期下行的趋势</span></span>
+  </div>
+</div>
+
+<!-- ==================== SCENE 4: 真问题 ==================== -->
+<div id="scene-problem" class="scene" data-start="97.8" data-end="129.7">
+  <div class="bg-circle" style="width:680px;height:680px;background:#4fc3f7;bottom:-180px;right:-180px;opacity:.055"></div>
+
+  <div class="fade-up" data-t="97.8" style="position:absolute;top:110px;left:80px;right:80px;text-align:center">
+    <div style="font-size:38px;color:#888;margin-bottom:10px">真正的问题是什么？</div>
+    <div class="title-md" style="font-size:48px">节目越来越<span class="highlight">不敢玩</span></div>
+  </div>
+
+  <div style="position:absolute;top:345px;left:80px;right:80px">
+    <div class="fade-up" data-t="102.3" style="text-align:center;margin-bottom:24px">
+      <span class="title-md" style="font-size:40px">以前<span class="accent-blue"> VS </span>现在</span>
+    </div>
+    <div style="display:flex;gap:20px">
+      <div class="fade-up" data-t="102.3" style="flex:1;background:linear-gradient(180deg,#1a2a1a,#1a1a1a);border-radius:18px;padding:28px 18px;border:1px solid #333;text-align:center">
+        <div style="font-size:62px;margin-bottom:10px">⚔️</div>
+        <div style="font-size:30px;color:#66bb6a;font-weight:900">撕名牌 / 追逐战</div>
+        <div style="font-size:24px;color:#888;margin-top:8px">高空挑战 · 卧底</div>
+        <div style="font-size:22px;color:#666;margin-top:10px">观众替他们紧张</div>
+      </div>
+      <div class="fade-up" data-t="106.9" style="flex:1;background:linear-gradient(180deg,#2a1a1a,#1a1a1a);border-radius:18px;padding:28px 18px;border:1px solid #333;text-align:center">
+        <div style="font-size:62px;margin-bottom:10px">🛶</div>
+        <div style="font-size:30px;color:#ef5350;font-weight:900">香蕉船 / 打卡任务</div>
+        <div style="font-size:24px;color:#888;margin-top:8px">敲大鼓 · 风景晃过</div>
+        <div style="font-size:22px;color:#666;margin-top:10px">安全，但没劲</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;top:955px;left:76px;right:76px">
+    <div class="fade-up" data-t="114.9" style="background:#171717;border:1px solid #333;border-radius:18px;padding:24px 28px;margin-bottom:18px;font-size:31px;color:#ddd;line-height:1.55;text-align:center">
+      以前嘉宾各有活法：<span class="highlight nowrap">疯、算、跑、拼</span>
+    </div>
+    <div class="fade-up" data-t="121.7" style="background:#251414;border:1px solid #55311f;border-radius:18px;padding:24px 28px;font-size:31px;color:#ddd;line-height:1.55;text-align:center">
+      现在所有人都变得<br><span class="highlight nowrap">小心、安全、不出错</span>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCENE 5: 行业逻辑 ==================== -->
+<div id="scene-industry" class="scene" data-start="129.7" data-end="169.7">
+  <div class="bg-circle" style="width:700px;height:700px;background:#4fc3f7;bottom:-200px;right:-200px;opacity:.05"></div>
+
+  <div class="fade-up" data-t="129.7" style="position:absolute;top:100px;left:80px;right:80px;text-align:center">
+    <div style="font-size:40px;color:#888;margin-bottom:14px">说句大实话</div>
+    <div class="title-md" style="font-size:46px"><span class="nowrap">这不是一人一档的锅</span></div>
+  </div>
+
+  <!-- Program names: full-width rows so fixed titles never break or get clipped -->
+  <div style="position:absolute;top:340px;left:92px;right:92px">
+    <div class="fade-up" data-t="133.2" style="font-size:30px;color:#aaa;text-align:center;margin-bottom:20px">这不是一档节目的孤例</div>
+    <div class="fade-up" data-t="136.7" style="display:grid;grid-template-columns:1fr;gap:14px">
+      <div style="background:#1a1a1a;border-radius:18px;padding:18px 28px;border:1px solid #333;font-size:34px;color:#eee;font-weight:900"><span style="font-size:36px;margin-right:16px">🏃</span><span class="nowrap">《跑男》</span></div>
+      <div style="background:#1a1a1a;border-radius:18px;padding:18px 28px;border:1px solid #333;font-size:34px;color:#eee;font-weight:900"><span style="font-size:36px;margin-right:16px">🧩</span><span class="nowrap">《极限挑战》</span></div>
+      <div style="background:#1a1a1a;border-radius:18px;padding:18px 28px;border:1px solid #333;font-size:34px;color:#eee;font-weight:900"><span style="font-size:36px;margin-right:16px">🌿</span><span class="nowrap">《向往的生活》</span></div>
+      <div style="background:#1a1a1a;border-radius:18px;padding:18px 28px;border:1px solid #333;font-size:34px;color:#eee;font-weight:900"><span style="font-size:36px;margin-right:16px">🎤</span><span class="nowrap">《歌手》</span></div>
+    </div>
+    <div class="fade-up" data-t="142.6" style="margin-top:16px;background:#201712;border:1px solid #55311f;border-radius:18px;padding:18px 24px;text-align:center;font-size:32px;color:#ffd54f;font-weight:900">
+      共同问题：老模式吃太久了
+    </div>
+  </div>
+
+  <!-- Three problems -->
+  <div style="position:absolute;top:1030px;left:80px;right:80px">
+    <div class="fade-up" data-t="145" style="background:#1a1a1a;border-radius:12px;padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;gap:16px">
+      <span style="font-size:32px;color:#ff6b35">①</span>
+      <span style="font-size:28px;color:#ccc"><span class="nowrap">2014年引进</span> <span class="highlight nowrap">一度很能打</span></span>
+    </div>
+    <div class="fade-up" data-t="150.9" style="background:#1a1a1a;border-radius:12px;padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;gap:16px">
+      <span style="font-size:32px;color:#ffd54f">②</span>
+      <span style="font-size:28px;color:#ccc"><span class="accent-blue nowrap">别人还在变</span>，<span class="highlight nowrap">我们不敢动</span></span>
+    </div>
+    <div class="fade-up" data-t="156.8" style="background:#1a1a1a;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px">
+      <span style="font-size:32px;color:#ef5350">③</span>
+      <span style="font-size:28px;color:#ccc">怕改砸了，<span class="highlight nowrap">连老本都赔进去</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCENE 6: 结尾 ==================== -->
+<div id="scene-ending" class="scene" data-start="169.7" data-end="196.2">
+  <div class="bg-circle" style="width:500px;height:500px;background:#ff6b35;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.03"></div>
+
+  <!-- Paddle photo -->
+  <div class="fade-up" data-t="170.8" style="position:absolute;top:160px;left:50%;transform:translateX(-50%);width:500px;height:380px;background:#1a1a1a;border-radius:24px;border:1px solid #333;display:flex;flex-direction:column;align-items:center;justify-content:center">
+    <div style="font-size:100px">🪶</div>
+    <div style="font-size:28px;color:#888;margin-top:16px;text-align:center;line-height:1.4">
+      李晨发微博<br>
+      <span style="color:#999">「看到这支船桨，<br><span class="nowrap">你也会怀念当初吗？</span>」</span>
+    </div>
+  </div>
+
+  <div class="fade-up" data-t="178.2" style="position:absolute;top:640px;left:80px;right:80px;text-align:center">
+    <div class="body-text">评论区 <span class="highlight">全是青春回忆</span></div>
+  </div>
+
+  <!-- Key insight -->
+  <div class="fade-up" data-t="182.4" style="position:absolute;top:760px;left:60px;right:60px;background:linear-gradient(135deg,#2a1a1a,#1a1a2a);border-radius:24px;padding:34px 30px;border:2px solid #ff6b3544;text-align:center">
+    <div style="font-size:30px;color:#ff6b35;font-weight:700;line-height:1.7">
+      观众怀念过去<br>不是因为过去完美<br>而是现在的节目<br>缺少<span class="nowrap" style="color:#fff;background:#ff6b35;padding:0 8px">继续看的理由</span>
+    </div>
+  </div>
+
+  <div class="fade-up" data-t="190.9" style="position:absolute;bottom:100px;left:80px;right:80px;text-align:center">
+    <span class="body-text" style="font-size:38px;color:#888">如果再不改变<br><span class="highlight nowrap">低点还会继续出现</span></span>
+  </div>
+</div>
+
+<!-- ==================== SCENE 7: OUTRO ==================== -->
+<div id="scene-outro" class="scene" data-start="196.2" data-end="201.6">
+  <div class="bg-circle" style="width:800px;height:800px;background:#ff6b35;top:-200px;left:-200px;opacity:.05"></div>
+  <div class="bg-circle" style="width:600px;height:600px;background:#ff6b35;bottom:-150px;right:-150px;opacity:.05"></div>
+
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);text-align:center">
+    <div class="fade-up" data-t="196.2">
+      <div style="font-size:120px;margin-bottom:16px">🐟</div>
+    </div>
+    <div class="fade-up" data-t="197.3">
+      <div class="outro-name nowrap">闻鱼百晓生</div>
+    </div>
+    <div class="fade-up" data-t="198.4">
+      <div class="outro-tagline" style="margin-top:20px">江湖不大，有瓜就吃</div>
+    </div>
+    <div class="fade-up" data-t="199.5">
+      <div style="margin-top:60px;font-size:28px;color:#555;letter-spacing:2px">点个关注，下期见 👋</div>
+    </div>
+  </div>
+</div>
+
+<!-- Subtitle overlay -->
+<div id="subtitle" aria-live="off"><div class="caption-text"></div></div>
+
+<!-- Audio element -->
+<audio id="narration" preload="auto">
+  <source src="narration.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// === Animation contract ===
+window.animationMeta = {
+  duration: 202,
+  fps: 15,
+  width: 1080,
+  height: 1920
+};
+
+// === Scene definitions ===
+const scenes = [
+  { id: 'hook', start: 0, end: 25.5 },
+  { id: 'trigger', start: 25.5, end: 56 },
+  { id: 'time-line', start: 56, end: 97.8 },
+  { id: 'problem', start: 97.8, end: 129.7 },
+  { id: 'industry', start: 129.7, end: 169.7 },
+  { id: 'ending', start: 169.7, end: 196.2 },
+  { id: 'outro', start: 196.2, end: 201.6 }
+];
+
+// === Captions ===
+const captions = [{"start":0.45,"end":2.27,"text":"刷到这条热搜的时候"},{"start":2.27,"end":3.29,"text":"我愣了一下。"},{"start":3.29,"end":4.7,"text":"不是惊讶它低了"},{"start":4.7,"end":6.93,"text":"而是惊讶：这么多年过去了"},{"start":6.93,"end":8.76,"text":"大家还在等跑男变好。"},{"start":8.76,"end":10.38,"text":"跑男这档国民综艺"},{"start":10.38,"end":11.39,"text":"播了十几年。"},{"start":11.39,"end":13.82,"text":"现在新一季收视跌破0.4"},{"start":13.82,"end":15.44,"text":"争议又冲上了热搜。"},{"start":15.44,"end":17.27,"text":"很多人把锅扣给白鹿。"},{"start":17.27,"end":19.49,"text":"但一档播了十几年的节目"},{"start":19.49,"end":22.13,"text":"真会因为一个人就走到今天吗？"},{"start":22.13,"end":23.75,"text":"今天聊聊：一档综艺"},{"start":23.75,"end":25.98,"text":"到底是怎么慢慢“老”下去的。"},{"start":25.98,"end":27.19,"text":"先说白鹿这茬。"},{"start":27.19,"end":30.02,"text":"最新一季跑男做了一个水上项目。"},{"start":30.02,"end":33.65,"text":"白鹿和孟子义分到的是相对轻松的香蕉船；"},{"start":33.65,"end":35.87,"text":"另一边，其他嘉宾又要划船"},{"start":35.87,"end":37.09,"text":"又要游泳接力。"},{"start":37.09,"end":39.31,"text":"转场的时候，白鹿问了一句"},{"start":39.31,"end":40.92,"text":"“你们真的觉得累吗？”"},{"start":40.92,"end":43.15,"text":"她自己坐香蕉船漂了一路"},{"start":43.15,"end":46.18,"text":"回头问刚游完五百米游泳接力的队"},{"start":46.18,"end":46.98,"text":"友：你累吗？"},{"start":46.98,"end":49.41,"text":"这句话一出来，网友当然会炸。"},{"start":49.41,"end":51.43,"text":"再加上她叫郑恺“老人家”"},{"start":51.43,"end":54.46,"text":"还指挥李晨“你肯定输”……这些细节"},{"start":54.46,"end":56.48,"text":"叠在一起，口碑自然翻车。"},{"start":56.48,"end":59.39,"text":"但如果说跑男这节目是因为白鹿才"},{"start":59.39,"end":61.14,"text":"不行的，那也太简单了。"},{"start":61.14,"end":62.88,"text":"先把收视口径说清楚。"},{"start":62.88,"end":65.8,"text":"二零二三年，网上传过一个0.37"},{"start":65.8,"end":66.77,"text":"47的数据；"},{"start":66.77,"end":69.68,"text":"但那次节目组用城网3.384的"},{"start":69.68,"end":70.65,"text":"数据回怼过。"},{"start":70.65,"end":72.2,"text":"也就是说，不同平台"},{"start":72.2,"end":74.53,"text":"不同口径，不能直接拿来横比。"},{"start":74.53,"end":77.45,"text":"二零二六年首期传出的0.389"},{"start":77.45,"end":78.61,"text":"9，确实不好看"},{"start":78.61,"end":81.52,"text":"但它不能被简单说成“低过0.37”。"},{"start":81.52,"end":83.08,"text":"真正值得注意的是"},{"start":83.08,"end":86.18,"text":"五月八日第三期又被传到约0.27。"},{"start":86.18,"end":88.9,"text":"这个数字也要加一句“网传待核实”"},{"start":88.9,"end":90.45,"text":"但它说明了一件事"},{"start":90.45,"end":92.39,"text":"大家对跑男下滑的感受"},{"start":92.39,"end":93.37,"text":"越来越强了。"},{"start":93.37,"end":95.5,"text":"所以重点不是某一个数字"},{"start":95.5,"end":98.22,"text":"而是这档节目长期往下走的趋势。"},{"start":98.22,"end":99.97,"text":"真正的问题是什么？"},{"start":99.97,"end":101.5,"text":"以前跑男玩什么？"},{"start":101.5,"end":102.81,"text":"撕名牌、追逐战"},{"start":102.81,"end":106.09,"text":"高空挑战、卧底——观众看着都替他们紧"},{"start":106.09,"end":106.96,"text":"张。"},{"start":106.96,"end":107.83,"text":"现在呢？"},{"start":107.83,"end":109.58,"text":"香蕉船接力、敲大鼓"},{"start":109.58,"end":110.67,"text":"打卡式任务。"},{"start":110.67,"end":112.64,"text":"尼洋河那么美的风景"},{"start":112.64,"end":114.61,"text":"镜头晃几下就过去了。"},{"start":114.61,"end":116.57,"text":"以前的嘉宾，邓超能疯"},{"start":116.57,"end":118.32,"text":"陈赫能算，鹿晗能跑"},{"start":118.32,"end":119.63,"text":"Baby能拼。"},{"start":119.63,"end":121.82,"text":"每个人都有自己的活法。"},{"start":121.82,"end":124.0,"text":"现在不是嘉宾完全不行"},{"start":124.0,"end":127.28,"text":"而是节目越来越不敢让他们有活法。"},{"start":127.28,"end":129.03,"text":"所有人都变得小心"},{"start":129.03,"end":130.12,"text":"安全、不出错。"},{"start":130.12,"end":131.24,"text":"说句大实话。"},{"start":131.24,"end":134.57,"text":"跑男的问题，不只是跑男这档节目自"},{"start":134.57,"end":135.46,"text":"己的问题。"},{"start":135.46,"end":137.46,"text":"《极限挑战》不也这样吗？"},{"start":137.46,"end":139.47,"text":"《向往的生活》呢？《歌手》呢？"},{"start":139.47,"end":142.8,"text":"这些综艺都吃过同一套模式的红利"},{"start":142.8,"end":144.58,"text":"引进、改编、复制爆款。"},{"start":144.58,"end":147.92,"text":"二零一四年，这套玩法对中国观众来"},{"start":147.92,"end":149.25,"text":"说，是降维打击。"},{"start":149.25,"end":150.59,"text":"但十年过去了。"},{"start":150.59,"end":153.03,"text":"别人还在改，还在试新东西；"},{"start":153.03,"end":155.48,"text":"我们这边却越来越不敢动。"},{"start":155.48,"end":157.26,"text":"怕改砸，怕得罪粉丝"},{"start":157.26,"end":159.93,"text":"怕连最后一点老本都赔进去。"},{"start":159.93,"end":161.71,"text":"结果就是：老人走了"},{"start":161.71,"end":164.38,"text":"新人撑不起来，游戏越来越稳"},{"start":164.38,"end":165.93,"text":"观众也越来越少。"},{"start":165.93,"end":168.16,"text":"这不是某一个嘉宾的锅"},{"start":168.16,"end":170.16,"text":"而是“综艺 N 代”的通病。"},{"start":170.16,"end":172.2,"text":"李晨前两天发了一条微博"},{"start":172.2,"end":174.61,"text":"配图是初代跑男团的签名船桨。"},{"start":174.61,"end":176.1,"text":"他说：“看到这支船桨"},{"start":176.1,"end":177.58,"text":"你也会怀念当初吗？”"},{"start":177.58,"end":179.25,"text":"评论区全是青春回忆。"},{"start":179.25,"end":181.48,"text":"但我想说的是：观众怀念过去"},{"start":181.48,"end":183.33,"text":"不是因为过去永远最好。"},{"start":183.33,"end":185.0,"text":"而是因为现在的节目"},{"start":185.0,"end":187.22,"text":"没给他们一个继续看的理由。"},{"start":187.22,"end":190.19,"text":"如果综艺行业再不改这个“怕输”的毛病。"},{"start":190.19,"end":192.23,"text":"那跑男今天被讨论的低点"},{"start":192.23,"end":193.9,"text":"可能还不是最后一个。"},{"start":193.9,"end":195.2,"text":"我是闻鱼百晓生"},{"start":195.2,"end":196.68,"text":"江湖不大，有瓜就吃。"},{"start":196.68,"end":201.6,"text":"下期见。"}];
+function updateCaption(seconds) {
+  const box = document.getElementById('subtitle');
+  if (!box) return;
+  const textEl = box.querySelector('.caption-text');
+  const cap = captions.find(c => seconds >= c.start && seconds < c.end);
+  if (cap && cap.text) {
+    textEl.textContent = cap.text;
+    box.classList.add('show');
+    placeCaptionAvoidingText(box);
+  } else {
+    textEl.textContent = '';
+    box.classList.remove('show');
+  }
+}
+
+function placeCaptionAvoidingText(box) {
+  const scene = document.querySelector('.scene.active');
+  if (!scene) return;
+
+  const candidates = [
+    { type: 'bottom', value: 28 },
+    { type: 'bottom', value: 170 },
+    { type: 'bottom', value: 320 },
+    { type: 'top', value: 70 },
+    { type: 'top', value: 230 },
+    { type: 'top', value: 430 },
+    { type: 'top', value: 620 },
+    { type: 'top', value: 820 }
+  ];
+
+  const rect = el => {
+    const r = el.getBoundingClientRect();
+    return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height };
+  };
+  const area = (a, b) => {
+    const x = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+    const y = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+    return x * y;
+  };
+  const visible = el => {
+    for (let n = el; n && n !== document.body; n = n.parentElement) {
+      const cs = getComputedStyle(n);
+      if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity || '1') < 0.05) return false;
+      if (n.classList && n.classList.contains('fade-up') && !n.classList.contains('show')) return false;
+      if (n === scene) break;
+    }
+    return true;
+  };
+  const hasDirectText = el => Array.from(el.childNodes).some(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim());
+  const textBoxes = Array.from(scene.querySelectorAll('div,span'))
+    .filter(el => !el.closest('#subtitle') && hasDirectText(el) && visible(el))
+    .map(el => ({ el, box: rect(el), fs: parseFloat(getComputedStyle(el).fontSize || '0') }))
+    .filter(item => item.fs >= 18 && item.box.width > 8 && item.box.height > 8);
+
+  let best = null;
+  for (const c of candidates) {
+    if (c.type === 'bottom') {
+      box.style.top = 'auto';
+      box.style.bottom = c.value + 'px';
+    } else {
+      box.style.bottom = 'auto';
+      box.style.top = c.value + 'px';
+    }
+    const capBox = rect(box.querySelector('.caption-text'));
+    let overlap = 0;
+    for (const item of textBoxes) overlap += area(capBox, item.box);
+    // Prefer lower captions when equally safe, but never at the cost of overlap.
+    const preference = c.type === 'bottom' ? c.value * 0.01 : 20 + c.value * 0.01;
+    const score = overlap * 1000 + preference;
+    if (!best || score < best.score) best = { c, score, overlap };
+    if (overlap === 0 && c.type === 'bottom') break;
+  }
+  if (best) {
+    if (best.c.type === 'bottom') {
+      box.style.top = 'auto';
+      box.style.bottom = best.c.value + 'px';
+    } else {
+      box.style.bottom = 'auto';
+      box.style.top = best.c.value + 'px';
+    }
+  }
+}
+
+// === Seek to ===
+window.seekTo = function(seconds) {
+  // Update active scene
+  let activeId = null;
+  for (const s of scenes) {
+    if (seconds >= s.start && seconds < s.end) {
+      activeId = s.id;
+      break;
+    }
+  }
+  if (!activeId && seconds >= scenes[scenes.length-1].end) {
+    activeId = scenes[scenes.length-1].id;
+  }
+
+  document.querySelectorAll('.scene').forEach(el => {
+    el.classList.toggle('active', el.id === 'scene-' + activeId);
+  });
+
+  // Update fade animations: elements with data-t attribute
+  const sceneEl = activeId ? document.getElementById('scene-' + activeId) : null;
+  if (sceneEl) {
+    sceneEl.querySelectorAll('[data-t]').forEach(el => {
+      const triggerTime = parseFloat(el.getAttribute('data-t'));
+      const sceneStart = parseFloat(sceneEl.getAttribute('data-start'));
+      const elapsed = seconds - sceneStart;
+      // data-t values are absolute timeline seconds (matching the script), not scene-relative.
+      // The previous elapsed-vs-absolute comparison delayed or hid many elements, making scene 2 look blank.
+      el.classList.toggle('show', seconds >= triggerTime);
+    });
+  }
+
+  updateCaption(seconds);
+
+  // Also sync audio
+  const audio = document.getElementById('narration');
+  if (audio) {
+    const diff = Math.abs(audio.currentTime - seconds);
+    if (diff > 0.5) {
+      audio.currentTime = seconds;
+    }
+    const stillMode = new URLSearchParams(window.location.search).get('still') === '1';
+    if (!stillMode && audio.paused && seconds < 202) {
+      audio.play().catch(() => {});
+    }
+  }
+};
+
+// === Auto-play on load ===
+window.addEventListener('load', () => {
+  const audio = document.getElementById('narration');
+  audio.addEventListener('timeupdate', () => {
+    window.seekTo(audio.currentTime);
+  });
+
+  // Preview still mode: /index.html?t=43&still=1 renders an exact storyboard frame for inspection.
+  const params = new URLSearchParams(window.location.search);
+  const stillAt = parseFloat(params.get('t'));
+  const stillMode = params.get('still') === '1' && Number.isFinite(stillAt);
+  if (stillMode) {
+    document.documentElement.classList.add('still-mode');
+    audio.pause();
+    audio.currentTime = stillAt;
+    window.seekTo(stillAt);
+    requestAnimationFrame(() => window.seekTo(stillAt));
+    setTimeout(() => { window.seekTo(stillAt); audio.pause(); }, 80);
+    return;
+  }
+
+  // Start playing after user interaction or auto
+  const tryPlay = () => {
+    audio.play().catch(() => {});
+  };
+  document.addEventListener('click', tryPlay, { once: true });
+  setTimeout(tryPlay, 500);
+});
+</script>
+</div><!-- /stage -->
+</div><!-- /phone-frame -->
+
+<script>
+// Scale stage to fit viewport while maintaining 9:16 ratio
+(function fitStage() {
+  const stage = document.getElementById('stage');
+  const frame = document.querySelector('.phone-frame');
+  function resize() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const scaleX = vw / 1080;
+    const scaleY = vh / 1920;
+    const scale = Math.min(scaleX, scaleY) * 0.98; // 98% to leave a tiny margin
+    stage.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('resize', resize);
+  resize();
+})();
+</script>
+</body>
+</html>
