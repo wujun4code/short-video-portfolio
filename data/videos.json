@@ -1,12 +1,12 @@
 [
   {
     "id": "running-man-analysis-001",
-    "type": "html",
-    "src": "stories/20260509-running-man-analysis.html",
-    "poster": "",
+    "type": "video",
+    "src": "stories/20260509-running-man-video.mp4",
+    "poster": "stories/20260509-running-man-cover.png",
     "title": "跑男收视率创新低 · 从跑男看综N代困局",
     "description": "闻🐟百晓生视频故事板：跑男收视率0.3899%创历史新低，从白鹿争议到综艺行业系统性衰退的深度拆解",
-    "duration": 270
+    "duration": 179
   },
   {
     "id": "king-mask-ppt-001",
